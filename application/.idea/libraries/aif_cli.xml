@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="aif-cli">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../NLPlibs/AIF/aif-cli" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
