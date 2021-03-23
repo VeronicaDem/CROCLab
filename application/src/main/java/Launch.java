@@ -1,20 +1,29 @@
+import Handler.Handler;
 
+import java.io.IOException;
 
 public class Launch {
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
 
-//        String[] myArgs = new String[8];
-//        myArgs[0] = "1";
-//        myArgs[1] = "C:/Users/ivan/Desktop/CROCLab/Files/InputFile_abbrev.txt";
-//        myArgs[2] = "C:/Users/ivan/Desktop/CROCLab/Files";
-
-//        PropertyLoader pl = new PropertyLoader("C:/Users/ivan/Desktop/CROCLab/Files/Properties.txt");
-
-
-        Handler analyzer = new Handler("C:/Users/ivan/Desktop/CROCLab/Files/Properties.txt");
+        Long startTime = System.currentTimeMillis();
+        Handler analyzer = new Handler("C:/Users/ivan/Desktop/CROCLab/Files/Property.json");
         analyzer.createOutputFiles();
+        Long endTime = System.currentTimeMillis();
+        System.out.println("Время на обработку файла = " + (endTime - startTime));
+
+
+//        FileInputStream fis = new FileInputStream("C:/Users/ivan/Desktop/CROCLab/Files/InputFile_abbrev.txt");
+//        UniversalDetector detector = new UniversalDetector(null);
+//        int countReadByte;
+//        byte[] buff = new byte[fis.available()];
+//        while ((countReadByte = fis.read(buff)) > 0 && !detector.isDone()){
+//            detector.handleData(buff, 0, countReadByte);
+//        }
+//        detector.dataEnd();
+//        String encoding = detector.getDetectedCharset();
+//        System.out.println(encoding);
     }
 
 }

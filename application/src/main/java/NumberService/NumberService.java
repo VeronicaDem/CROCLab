@@ -16,7 +16,7 @@ public class NumberService {
     }
 
     //Принимает список предложений из файла. Возвращает список предложений с числами, раскрытыми в текст.
-    public static ArrayList<String> handleNumbers(ArrayList<String>fileSentences){
+    private static ArrayList<String> handleNumbers(ArrayList<String>fileSentences){
         ArrayList<String>cleanSentences = new ArrayList<>();
         Pattern numbersPattern = Pattern.compile("[\\d]+");
         for (String sentence : fileSentences){
@@ -25,12 +25,19 @@ public class NumberService {
             while(matcher.find()){
                 String foundNumber = sentence.substring(matcher.start(), matcher.end()).trim();
                 Long number = Long.parseLong(foundNumber);
-                String replacement = NumberHandler.numberToSymbol(number, number).trim();
-                matcher.appendReplacement(result, replacement);
+                String replacement = NumberHandler.numberToSymbol(number, number);
+                matcher.appendReplacement(result, " " + replacement + " ");
             }
             matcher.appendTail(result);
             cleanSentences.add(result.toString());
         }
         return cleanSentences;
+    }
+
+    public static String numberToSymbol(String number){
+        String result;
+        Long numberToReplace = Long.parseLong(number);
+        result = NumberHandler.numberToSymbol(numberToReplace, numberToReplace);
+        return result;
     }
 }
