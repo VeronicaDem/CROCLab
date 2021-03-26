@@ -1,23 +1,24 @@
 package ProcessingServices;
 
+import InputFile.InputFile;
+
 import java.util.ArrayList;
 
 public class PunctuationMarkService {
 
-    public static ArrayList<String> handle(ArrayList<String>filesTexts){
-        ArrayList<String>correctPunctuationTexts = new ArrayList<>();
-        for (String text : filesTexts){
-            correctPunctuationTexts.add(handlePunctMarks(text));
+    public static void handle(ArrayList<InputFile>inputFiles){
+        for (InputFile inputFile : inputFiles){
+            handlePunctuationMarks(inputFile);
         }
-        return correctPunctuationTexts;
     }
 
-    private static String handlePunctMarks(String fileText){
-        fileText = fileText.replaceAll("\\.{2,}", "\\.").replaceAll("%", "процент")
+    private static void handlePunctuationMarks(InputFile inputFile){
+        String fileText = inputFile.getFileText();
+        String handledFileText = fileText.replaceAll("\\.{2,}", "\\.").replaceAll("%", "процент")
                 .replaceAll("\\+", " плюс ").replaceAll(";", "\\.")
                 .replaceAll("<(/?[^<>]*)>", " ").replaceAll(":", "")
                 .replaceAll("[\\W&&[^а-яА-ЯёЁ,?.!\\s]]", "");
-        return fileText;
+        inputFile.setFileText(handledFileText);
     }
 
 }

@@ -1,6 +1,8 @@
 package ProcessingServices;
 
 import Handler.Handler;
+import InputFile.InputFile;
+
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -8,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class AbbreviationService {
 
-    private static final String DESCRIPTION_REPLACEMENT = " Сокращение";
+    private static final String DESCRIPTION_REPLACEMENT = "(abbreviation)";
 
     private static Map<String, String> daysOfWeek = new LinkedHashMap<>();
     static{
@@ -22,15 +24,18 @@ public class AbbreviationService {
     }
 
     //Принимает строку, в которую записан файл. Возвращает строку с обработанными сокращениями.
-    public static String handle(String fileText){
-        String handledText = handleAbbreviation(fileText);
-        handledText = handleDaysOfWeek(handledText);
-        handledText = handleInitials(handledText);
-        return handledText;
+    public static void handle(ArrayList<InputFile>inputFiles){
+        for (InputFile inputFile : inputFiles){
+            handleAbbreviation(inputFile);
+            handleDaysOfWeek(inputFile);
+            handleInitials(inputFile);
+        }
     }
 
-
-    public static String handleAbbreviation(String fileText){
+    //Ищутся сокращения вида: "гор.", если для найденного сокращения существует замена в словаре, то сокращение будет
+    //заменено и произведённая замена добавиться в файл замен.
+    private static void handleAbbreviation(InputFile inputFile){
+        String fileText = inputFile.getFileText();
         StringBuffer result = new StringBuffer();
         //regex, который находит аббревиатуры
         Pattern pattern = Pattern.compile("(\\b[а-яА-ЯёЁ]+?\\.)|([А-Яа-яёЁ]{1,4}-[А-Яа-яёЁ]+)");
@@ -42,15 +47,16 @@ public class AbbreviationService {
             String replacement = Handler.getDictionary().abbreviationExplanation(abbreviation);
             if (replacement != null) {
                 matcher.appendReplacement(result, " " + replacement + " ");
-                Handler.replacementFile.addReplacement(abbreviation, replacement, DESCRIPTION_REPLACEMENT);
+                inputFile.getReplacementFile().addReplacement(abbreviation, replacement, DESCRIPTION_REPLACEMENT);
             }
         }
         matcher.appendTail(result);
-        return result.toString();
+        inputFile.setFileText(result.toString());
     }
 
     //Раскрывает найденные в тексте сокращения дней недели
-    private static String handleDaysOfWeek(String fileText){
+    private static void handleDaysOfWeek(InputFile inputfile){
+        String fileText = inputfile.getFileText();
         StringBuffer result = new StringBuffer();
         Pattern pattern = Pattern.compile("(\\b[а-яА-Я]{2}[;:,.!?\\s\b])", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(fileText);
@@ -64,12 +70,13 @@ public class AbbreviationService {
             }
         }
         matcher.appendTail(result);
-        return result.toString();
+        inputfile.setFileText(result.toString());
     }
 
     //Удаление инициалов
-    private static String handleInitials(String fileText){
-        fileText = fileText.replaceAll("\\s+[А-ЯЁ]\\.\\s*[А-ЯЁ]\\.", " ");
-        return fileText;
+    private static void handleInitials(InputFile inputFile){
+        String fileText = inputFile.getFileText();
+        String resultText = fileText.replaceAll("\\s+[А-ЯЁ]\\.\\s*[А-ЯЁ]\\.", " ");
+        inputFile.setFileText(resultText);
     }
 }

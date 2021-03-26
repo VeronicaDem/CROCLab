@@ -1,5 +1,8 @@
 package ProcessingServices;
 
+import FileToProcess.ProcessedFile;
+import InputFile.InputFile;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,13 +11,25 @@ public class SentenceSeparator {
 
 
     //Принимает текст файла. Возвращает текст разбитый на список предложений.
-    public static ArrayList<String>getSentences(String fileText){
+    public static ArrayList<ProcessedFile>getSentences(ArrayList<InputFile>inputFiles){
+        ArrayList<ProcessedFile>processedFiles = new ArrayList<>();
+        for (InputFile inputFile : inputFiles){
+            ProcessedFile processedFile = new ProcessedFile(inputFile.getFileName());
+            ArrayList<String>fileSentences = splitOnSentences(inputFile);
+            processedFile.setSentences(fileSentences);
+            processedFiles.add(processedFile);
+        }
+        return processedFiles;
+    }
+
+    private static ArrayList<String>splitOnSentences(InputFile inputFile){
+        String fileText = inputFile.getFileText();
         ArrayList<String>fileSentences = new ArrayList<>();
         //Регулярное выражение для поиска предложений в строке.
         Pattern pattern = Pattern.compile("[^\\!\\?\\.].*?[\\!\\?\\.]");
         Matcher matcher = pattern.matcher(fileText);
-        while(matcher.find()){
-            String foundSentence = fileText.substring(matcher.start() , matcher.end());
+        while(matcher.find()) {
+            String foundSentence = fileText.substring(matcher.start(), matcher.end());
             fileSentences.add(foundSentence);
         }
         return fileSentences;

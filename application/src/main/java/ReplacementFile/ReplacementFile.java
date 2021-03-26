@@ -1,17 +1,24 @@
 package ReplacementFile;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
 
 
 
 public class ReplacementFile {
 
-    private ArrayList<Replacement> replacements = new ArrayList<>();
+    private String processedFileName;
     private int countReplacement = 0;
-    private String filePath;
+    private ArrayList<Replacement> replacements = new ArrayList<>();
+    private transient String fileName;
 
+
+    public ReplacementFile(String processedFileName){
+        this.processedFileName = processedFileName;
+        this.fileName = "Replacements" + processedFileName;
+    }
 
     public void addReplacement(String unreadableWord, String replacement, String description){
         Replacement newReplacement = new Replacement(unreadableWord, replacement, description);
@@ -19,21 +26,21 @@ public class ReplacementFile {
         countReplacement++;
     }
 
-    public void createReplacementFile(){
-        try(OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(filePath), "UTF-8");) {
-            for (Replacement replacement : replacements) {
-                os.write(replacement.toString());
-            }
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }
+
 
     public ArrayList<Replacement>getReplacements(){
         return replacements;
     }
 
+    public String getJsonFormat(){
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String result = gson.toJson(this);
+        return result;
+    }
 
+    public String getFileName() {
+        return fileName;
+    }
 
     class Replacement{
         private String unreadableWord;

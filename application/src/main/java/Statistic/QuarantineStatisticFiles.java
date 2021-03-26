@@ -9,10 +9,12 @@ import java.util.LinkedHashMap;
 
 public class QuarantineStatisticFiles {
 
+    private String processedFileName;
     private transient String fileName;
     private LinkedHashMap<String, Integer>quarantineSentencesStatistic = new LinkedHashMap<>();
 
     public QuarantineStatisticFiles(QuarantineSentencesFile quarantineSentencesFile){
+        this.processedFileName = quarantineSentencesFile.getFileName();
         generateQuarantineSentencesStatistic(quarantineSentencesFile);
         fileName = "Statistic" + quarantineSentencesFile.getFileName();
     }

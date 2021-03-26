@@ -1,5 +1,6 @@
 package ProcessingServices;
 
+import InputFile.InputFile;
 import NumberService.NumberService;
 
 import java.security.Permission;
@@ -11,15 +12,14 @@ public class PhoneNumberService {
 
     private static final String regexMobilePhoneNumbers = "(\\+7|8)[- _]*\\(?[- _]*(\\d{3}[- _]*\\)?([- _]*\\d){7}|\\d\\d[- _]*\\d\\d[- _]*\\)?([- _]*\\d){6})";
 
-    public static ArrayList<String>handle(ArrayList<String>filesTexts){
-        ArrayList<String>processedFiles = new ArrayList<>();
-        for (String fileText : filesTexts){
-            processedFiles.add(handlePhoneNumbers(fileText));
+    public static void handle(ArrayList<InputFile>inputFiles){
+        for (InputFile inputFile : inputFiles){
+            handlePhoneNumbers(inputFile);
         }
-        return processedFiles;
     }
 
-    private static String handlePhoneNumbers(String fileText){
+    private static void handlePhoneNumbers(InputFile inputFile){
+        String fileText = inputFile.getFileText();
         Pattern phoneNumberPattern = Pattern.compile(regexMobilePhoneNumbers);
         Matcher matcher = phoneNumberPattern.matcher(fileText);
         StringBuffer processedText = new StringBuffer();
@@ -38,6 +38,6 @@ public class PhoneNumberService {
             matcher.appendReplacement(processedText, replacement);
         }
         matcher.appendTail(processedText);
-        return processedText.toString();
+        inputFile.setFileText(processedText.toString());
     }
 }

@@ -15,7 +15,6 @@ public class CleanerSentenceService {
     }
 
     private static void removeEmptySentence(ArrayList<String>fileSentences){
-//        ArrayList<String>processedFileSentences = new ArrayList<>(sentences);
         Iterator<String> sentenceIterator = fileSentences.iterator();
         while(sentenceIterator.hasNext()){
             String sentence = sentenceIterator.next();

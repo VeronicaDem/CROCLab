@@ -1,25 +1,25 @@
 package ProcessingServices;
 
-import FileToProcess.ProcessedFile;
-
+import InputFile.InputFile;
 import java.util.ArrayList;
+
+
 
 public class LinkService {
 
     private static final String linksRegex = "https?:\\/\\/\\S+[^.?!\\s]";
 
-    public static ArrayList<String> handle(ArrayList<String> filesTexts){
-        ArrayList<String>processedFilesTexts = new ArrayList<>();
-        for (String fileText : filesTexts){
-            processedFilesTexts.add(removeLinks(fileText));
+    public static void handle(ArrayList<InputFile> inputFiles){
+        for (InputFile inputFile : inputFiles){
+            removeLinks(inputFile);
         }
-        return processedFilesTexts;
     }
 
 
-    private static String removeLinks(String fileText){
-        fileText = fileText.replaceAll(linksRegex, " ");
-        return fileText;
+    private static void removeLinks(InputFile inputFile){
+        String fileText = inputFile.getFileText();
+        String resultText = fileText.replaceAll(linksRegex, " ");
+        inputFile.setFileText(resultText);
     }
 
 

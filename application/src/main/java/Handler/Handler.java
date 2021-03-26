@@ -6,7 +6,8 @@ import InputFile.InputFile;
 import NumberService.NumberService;
 import ProcessingServices.*;
 import Properties.PropertyLoader;
-import ReplacementFile.ReplacementFile;
+import Quarantine.Quarantine;
+import ReplacementFile.CreatorReplacementFile;
 import Statistic.Statistic;
 
 
@@ -27,11 +28,9 @@ public class Handler {
     private static Dictionary dictionary = new Dictionary("Files/DefaultDictionary.txt");
     private PropertyLoader property;
     private Statistic statistic;
-    public static ReplacementFile replacementFile;
 
     public Handler(String propertyFile){
         property = new PropertyLoader(propertyFile);
-        replacementFile = new ReplacementFile();
         handle(property.getInputFilePaths(), property.getCharsToDelete(), property.getOutDirectory(), property.getOutFileSize());
     }
 
@@ -40,20 +39,19 @@ public class Handler {
         initializeFilesPaths(outDirectory);
         inputFiles = readInputFiles(inputFilesPaths);
 
-        //Считываем каждый файл в отдельную строку.
-        ArrayList<String>filesTexts = getFilesTexts(inputFiles);
         //Обрабатываем аббревиатуры.
-        ArrayList<String>removeAbbreviationsTexts = replaceAbbreviation(filesTexts);
+        AbbreviationService.handle(inputFiles);
         //Удаляем ссылки из предложений
-        ArrayList<String>removeLinksTexts = LinkService.handle(removeAbbreviationsTexts);
+        LinkService.handle(inputFiles);
         //Обработка мобильных номеров телефонов
-        ArrayList<String>processedPhoneNumbers = PhoneNumberService.handle(removeLinksTexts);
+        PhoneNumberService.handle(inputFiles);
         //Обработка знаков препинания и спец. символов.
-        ArrayList<String>correctPunctuationTexts = PunctuationMarkService.handle(processedPhoneNumbers);
-        //Разбиваем текст на предложения
-        separateFilesOnSentences(correctPunctuationTexts);
+        PunctuationMarkService.handle(inputFiles);
+        //Для каждого объекта inputFile создаётся объект processedFile. В processedFile хранится текст разбитый на
+        //предложения. Далее вся обработка будет происхожить со списком объектов processedFile.
+        processedFiles = SentenceSeparator.getSentences(inputFiles);
         //Раскрываем числа в текст.
-        handleNumbers();
+        NumberService.handle(processedFiles);
         //Удаляем лишние пробелы из предложения.
         removeWhitespace();
         //Отправляем в карантин предложения содержащие английские буквы.
@@ -62,8 +60,8 @@ public class Handler {
         AcronymService.handle(processedFiles);
         //Удаляем пустые предложения и предложения с одной буквой.
         CleanerSentenceService.handle(processedFiles);
-        //Создаём фалы статистики
-        statistic = new Statistic(outDirectory, inputFiles, processedFiles, replacementFile);
+        //Создаём файлы статистики
+        statistic = new Statistic(outDirectory, inputFiles, processedFiles);
         //Создаём выходной файл.
         createOutputFiles();
 
@@ -83,48 +81,22 @@ public class Handler {
     private ArrayList<InputFile> readInputFiles(String ... filePaths){
         ArrayList<InputFile>inputFiles = new ArrayList<>();
         for (String filePath : filePaths) {
-            InputFile inFile = new InputFile(filePath);
-            inputFiles.add(inFile);
-            processedFiles.add(new ProcessedFile(inFile.getFileName()));
+            InputFile inputFile = new InputFile(filePath);
+            inputFiles.add(inputFile);
         }
         return inputFiles;
     }
 
-    private ArrayList<String>replaceAbbreviation(ArrayList<String>filesTexts){
-        ArrayList<String>cleanTexts = new ArrayList<>();
-        for (String fileText : filesTexts){
-            //получаем текст, в котором заменены все сокращения, для которых была найдена замена в словаре
-            //сокращений.
-           String handledAbbreviation = AbbreviationService.handle(fileText);
-           cleanTexts.add(handledAbbreviation);
-        }
-        return cleanTexts;
-    }
 
     //Принимает список входных файлов. Возвращает список текстов прочитанных из файлов.
     private ArrayList<String>getFilesTexts(ArrayList<InputFile>inputFiles){
         ArrayList<String>filesTexts = new ArrayList<>();
         for(InputFile inputFile : inputFiles){
-            filesTexts.add(inputFile.getFileData());
+            filesTexts.add(inputFile.getFileText());
         }
         return filesTexts;
     }
 
-    //Принимает список файлов записанных в строку. Заполняет список обрабатываемых файлов актуальными данными.
-    private void separateFilesOnSentences(ArrayList<String>files){
-        Iterator<ProcessedFile> iterator = processedFiles.iterator();
-        for (String file : files){
-            //передаём в метод файл записанный в строку, получаем файл разбитый на список предложений.
-            ArrayList<String>fileSentences = SentenceSeparator.getSentences(file);
-            ProcessedFile processedFile = iterator.next();
-            processedFile.setSentences(fileSentences);
-        }
-    }
-
-    //Раскрывает числа в текст.
-    private void handleNumbers(){
-        NumberService.handle(processedFiles);
-    }
 
 
     //Удаляем лишние пробелы из предложения.
@@ -136,29 +108,31 @@ public class Handler {
     //Создаёт выходной файл.
     public void createOutputFiles(){
         String processedFilesDir = property.getOutDirectory() + "/ProcessedFiles";
-        String quarantineFilesDir = property.getOutDirectory() + "/QuarantineFiles";
         try{
             Files.createDirectories(Paths.get(processedFilesDir));
-            Files.createDirectories(Paths.get(quarantineFilesDir));
         }catch(IOException ex){
             ex.printStackTrace();
         }
         createProcessedFiles(processedFilesDir);
-        createQuarantineFiles(quarantineFilesDir);
-        statistic.createStatisticFiles();
+        Quarantine quarantine = new Quarantine(property.getOutDirectory(), processedFiles);
+        quarantine.createQuarantine();
+        CreatorReplacementFile.createReplacementFile(property.getOutDirectory(), inputFiles);
+        createStatisticFiles();
     }
 
-    public void createQuarantineFiles(String outDir){
-        for (ProcessedFile processedFile : processedFiles){
-            processedFile.createQuarantineFile(outDir);
-        }
-    }
 
     public void createProcessedFiles(String outDir){
         for (ProcessedFile currentFile : processedFiles){
             currentFile.createOutputFile(outDir, property.getOutFileSize());
         }
     }
+
+    private void createStatisticFiles(){
+        statistic = new Statistic(property.getOutDirectory(), inputFiles, processedFiles);
+        statistic.createStatisticFiles();
+    }
+
+
 
     public static Dictionary getDictionary() {
         return dictionary;

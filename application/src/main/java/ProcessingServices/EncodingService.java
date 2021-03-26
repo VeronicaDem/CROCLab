@@ -24,7 +24,7 @@ public class EncodingService {
             inputStream = new FileInputStream(file);
 
             byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
+            inputStream.read(buffer, 0, buffer.length);
             inputStream.close();
 
             Charset utf8 = StandardCharsets.UTF_8;
