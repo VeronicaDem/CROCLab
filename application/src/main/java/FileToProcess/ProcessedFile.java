@@ -1,9 +1,13 @@
 package FileToProcess;
 
+import InformationFiles.FileWithEnglishText;
+import Properties.PropertyLoader;
 import Quarantine.QuarantineSentencesFile;
 import ReplacementFile.ReplacementFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class ProcessedFile {
@@ -12,12 +16,14 @@ public class ProcessedFile {
     private QuarantineSentencesFile quarantineFile;
     private ArrayList<String>sentences = new ArrayList<>();
     private ReplacementFile replacementFile;
+    private FileWithEnglishText fileWithEnglishText;
 
 
     public ProcessedFile(String fileName){
         this.fileName = fileName;
         this.quarantineFile = new QuarantineSentencesFile(fileName);
         this.replacementFile = new ReplacementFile(fileName);
+        this.fileWithEnglishText = new FileWithEnglishText(fileName);
     }
 
 
@@ -44,20 +50,21 @@ public class ProcessedFile {
     }
 
     public void createOutputFile(String outputDirectory, int outputFileSize){
-//        try(OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outputDirectory + "/Processed" + fileName), "UTF-8")){
-//            for (String sentence : sentences){
-//                osw.write(sentence + "\n");
-//            }
-//        }catch(IOException e){
-//            e.printStackTrace();
+//        String pathForFile = outputDirectory + "/Processed_" + fileName.replace(".txt", "");
+//        try{
+//            Files.createDirectories(Paths.get(pathForFile));
+//        }catch(IOException ex){
+//            ex.printStackTrace();
 //        }
-
+        //Проверка размера выходного файла. Выходной файл делится на куски по 5мб или 10к строк(какое условие выполнится
+        // быстрее)
         int countByte = 0;
         int countSentence = 0;
         int countFiles = 1;
         OutputStreamWriter os = null;
         try{
-            os = new OutputStreamWriter(new FileOutputStream(outputDirectory + "/Processed" + fileName + countFiles));
+            os = new OutputStreamWriter(new FileOutputStream(outputDirectory + "/Processed_" +
+                    fileName.replace(".txt", "_" + countFiles + ".txt")));
         }catch(IOException ex){
             ex.printStackTrace();
         }
@@ -66,7 +73,7 @@ public class ProcessedFile {
             byte[]sentenceBytes = sentence.getBytes();
             countByte += sentenceBytes.length;
             countSentence++;
-            if (countByte >= 5242880 || countSentence >= 10000){
+            if (countByte >= (outputFileSize * 1024 * 1024) || countSentence >= 100000){
                 countByte = 0;
                 countSentence = 0;
                 try{
@@ -76,16 +83,22 @@ public class ProcessedFile {
                 }
                 countFiles++;
                 try{
-                    os = new OutputStreamWriter(new FileOutputStream(outputDirectory + "/Processed" + fileName +countFiles));
+                    os = new OutputStreamWriter(new FileOutputStream(outputDirectory + "/Processed_" +
+                            fileName.replace(".txt", "_" + countFiles + ".txt")));
                 }catch(IOException ex){
                     ex.printStackTrace();
                 }
             }
             try {
-                os.write(sentence + "\n");
+                os.write(sentence.toLowerCase() + "\n");
             }catch(IOException ex){
                 ex.printStackTrace();
             }
+        }
+        try{
+            os.close();
+        }catch(IOException ex){
+            ex.printStackTrace();
         }
     }
 
@@ -96,5 +109,9 @@ public class ProcessedFile {
 
     public ReplacementFile getReplacementFile() {
         return replacementFile;
+    }
+
+    public FileWithEnglishText getFileWithEnglishText() {
+        return fileWithEnglishText;
     }
 }

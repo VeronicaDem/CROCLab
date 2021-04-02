@@ -13,7 +13,7 @@ public class EncodingService {
     public static String changeEncoding(String filePath){
 
         File file = new File(filePath);
-        String fileName = filePath.substring(filePath.lastIndexOf("/"));
+        String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
         String newFileName = "ValidEncoding_" + fileName;
         String newFilePath = filePath.replace(fileName, newFileName);
         File newFile = new File(newFilePath);

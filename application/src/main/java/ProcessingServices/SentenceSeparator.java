@@ -2,6 +2,7 @@ package ProcessingServices;
 
 import FileToProcess.ProcessedFile;
 import InputFile.InputFile;
+import ReportLog.ReportLog;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -12,6 +13,7 @@ public class SentenceSeparator {
 
     //Принимает текст файла. Возвращает текст разбитый на список предложений.
     public static ArrayList<ProcessedFile>getSentences(ArrayList<InputFile>inputFiles){
+        ReportLog.logCurrentOperation("Разделение текста на предложения.");
         ArrayList<ProcessedFile>processedFiles = new ArrayList<>();
         for (InputFile inputFile : inputFiles){
             ProcessedFile processedFile = new ProcessedFile(inputFile.getFileName());

@@ -1,3 +1,4 @@
+import ExcelParser.ExcelParser;
 import Handler.Handler;
 
 import java.io.IOException;
@@ -10,6 +11,8 @@ public class Launch {
         Long startTime = System.currentTimeMillis();
         Handler analyzer = new Handler("C:/Users/ivan/Desktop/CROCLab/Files/Property.json");
         analyzer.createOutputFiles();
+//        ExcelParser excelParser = new ExcelParser("C:\\Users\\ivan\\Desktop\\CROCLab\\Files\\Aug_2020");
+//        excelParser.createFilesForProcess("C:\\Users\\ivan\\Desktop\\CROCLab\\Files\\FirstData");
         Long endTime = System.currentTimeMillis();
         System.out.println("Время на обработку файла = " + (endTime - startTime));
 

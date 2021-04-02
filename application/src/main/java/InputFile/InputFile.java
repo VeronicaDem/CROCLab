@@ -1,5 +1,6 @@
 package InputFile;
 
+import InformationFiles.FileWithAbbreviations;
 import ProcessingServices.EncodingService;
 import ReplacementFile.ReplacementFile;
 import org.apache.any23.encoding.TikaEncodingDetector;
@@ -16,17 +17,19 @@ public class InputFile {
     private String fileName;
     private String fileText;
     private ReplacementFile replacementFile;
+    private FileWithAbbreviations fileWithAbbreviations;
 
 
     public InputFile(String filePath) {
         this.filePath = filePath;
-        this.fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+        this.fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
         validEncoding = checkEncoding();
-        if (!validEncoding) {
-            this.filePath = EncodingService.changeEncoding(filePath);
-        }
+//        if (!validEncoding) {
+//            this.filePath = EncodingService.changeEncoding(filePath);
+//        }
         readData();
         this.replacementFile = new ReplacementFile(fileName);
+        this.fileWithAbbreviations = new FileWithAbbreviations(fileName);
     }
 
     public String getFileText() {
@@ -69,5 +72,9 @@ public class InputFile {
 
     public ReplacementFile getReplacementFile() {
         return replacementFile;
+    }
+
+    public FileWithAbbreviations getFileWithAbbreviations() {
+        return fileWithAbbreviations;
     }
 }

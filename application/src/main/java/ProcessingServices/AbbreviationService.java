@@ -44,7 +44,7 @@ public class AbbreviationService {
             //аббревиатура найденная в тексте
             String abbreviation = fileText.substring(matcher.start(), matcher.end()).trim();
             //ищем для неё замену в словаре
-            String replacement = Handler.getDictionary().abbreviationExplanation(abbreviation);
+            String replacement = Handler.getDictionaries().getReplacement(abbreviation);
             if (replacement != null) {
                 matcher.appendReplacement(result, " " + replacement + " ");
                 inputFile.getReplacementFile().addReplacement(abbreviation, replacement, DESCRIPTION_REPLACEMENT);

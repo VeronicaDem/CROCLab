@@ -1,24 +1,32 @@
 package Properties;
 
 public class PropertyData {
-    private String[] inputFiles ;
+    private String inputFilesDirectory;
     private String[] characterToDelete ;
     private Integer outputFileSize ;
     private String outputDirectory ;
-    private String[] dictionaries ;
+    private String dictionariesDirectory;
+    private String[] filesForStatisticPaths;
+    private String enableEnglishText;
 
-    public String[] getInputFiles() {
-        return inputFiles;
+
+    public String getEnableEnglishText() {
+        return enableEnglishText;
+    }
+    public void setEnableEnglishText(String enableEnglishText) {
+        this.enableEnglishText = enableEnglishText;
     }
 
-    public void setInputFiles(String[] inputFiles) {
-        this.inputFiles = inputFiles;
+    public String getInputFilesDirectory() {
+        return inputFilesDirectory;
+    }
+    public void setInputFilesDirectory(String inputFilesDirectory) {
+        this.inputFilesDirectory = inputFilesDirectory;
     }
 
     public String[] getCharacterToDelete() {
         return characterToDelete;
     }
-
     public void setCharacterToDelete(String[] characterToDelete) {
         this.characterToDelete = characterToDelete;
     }
@@ -26,7 +34,6 @@ public class PropertyData {
     public Integer getOutputFileSize() {
         return outputFileSize;
     }
-
     public void setOutputFileSize(Integer outputFileSize) {
         this.outputFileSize = outputFileSize;
     }
@@ -34,16 +41,21 @@ public class PropertyData {
     public String getOutputDirectory() {
         return outputDirectory;
     }
-
     public void setOutputDirectory(String outputDirectory) {
         this.outputDirectory = outputDirectory;
     }
 
-    public String[] getDictionaries() {
-        return dictionaries;
+    public String getDictionariesDirectory() {
+        return dictionariesDirectory;
+    }
+    public void setDictionariesDirectory(String dictionariesDirectory) {
+        this.dictionariesDirectory = dictionariesDirectory;
     }
 
-    public void setDictionaries(String[] dictionaries) {
-        this.dictionaries = dictionaries;
+    public String[] getFilesForStatisticPaths() {
+        return filesForStatisticPaths;
+    }
+    public void setFilesForStatisticPaths(String[] filesForStatisticPaths) {
+        this.filesForStatisticPaths = filesForStatisticPaths;
     }
 }

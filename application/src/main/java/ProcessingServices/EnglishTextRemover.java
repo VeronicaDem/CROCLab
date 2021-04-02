@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EnglishTextService {
+public class EnglishTextRemover {
 
     public static void handle(ArrayList<ProcessedFile> processedFiles) {
         for (ProcessedFile currentFile : processedFiles) {

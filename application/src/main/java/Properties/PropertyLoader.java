@@ -7,11 +7,13 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class PropertyLoader {
-    String[] inputFilePaths = null;
+    String inputFilesDirectory = null;
     String[] charsToDelete = null;
     Integer outFileSize = null;
     String outDirectory = null;
-    String[] dictionaries = null;
+    String dictionariesDirectory = null;
+    String[] filesForStatisticPaths = null;
+    boolean enableEnglishText = false;
 
     public PropertyLoader(String filePath){
         load(filePath);
@@ -30,27 +32,30 @@ public class PropertyLoader {
             Gson gson = new Gson();
             PropertyData propertyData = gson.fromJson(fileContent , PropertyData.class);
 
-            inputFilePaths = propertyData.getInputFiles();
-            correctInFilePaths();
+            inputFilesDirectory = propertyData.getInputFilesDirectory();
             charsToDelete = propertyData.getCharacterToDelete();
             outFileSize = propertyData.getOutputFileSize();
             outDirectory = propertyData.getOutputDirectory();
-            dictionaries = propertyData.getDictionaries();
+            dictionariesDirectory = propertyData.getDictionariesDirectory();
+            enableEnglishText = propertyData.getEnableEnglishText().toLowerCase().equals("true");
+            filesForStatisticPaths = propertyData.getFilesForStatisticPaths();
+            correctStatisticFilesPaths();
 
         }catch(IOException e){
             e.printStackTrace();
         }
     }
 
-    private void correctInFilePaths(){
-        for (int i = 0; i < inputFilePaths.length; i++){
-            inputFilePaths[i] = inputFilePaths[i].trim();
+
+    private void correctStatisticFilesPaths(){
+        for (int i = 0; i < filesForStatisticPaths.length; i++){
+            filesForStatisticPaths[i] = filesForStatisticPaths[i].trim();
         }
     }
 
 
-    public String[] getInputFilePaths() {
-        return inputFilePaths;
+    public String getInputFilesDirectory() {
+        return inputFilesDirectory;
     }
     public String[] getCharsToDelete() {
         return charsToDelete;
@@ -62,4 +67,15 @@ public class PropertyLoader {
         return outDirectory;
     }
 
+    public String getDictionariesDirectory() {
+        return dictionariesDirectory;
+    }
+
+    public String[] getFilesForStatisticPaths() {
+        return filesForStatisticPaths;
+    }
+
+    public boolean getEnableEnglishText() {
+        return enableEnglishText;
+    }
 }

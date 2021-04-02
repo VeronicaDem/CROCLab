@@ -1,6 +1,7 @@
 package NumberService;
 
 import FileToProcess.ProcessedFile;
+import ReportLog.ReportLog;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -9,6 +10,7 @@ import java.util.regex.Pattern;
 public class NumberService {
 
     public static void handle(ArrayList<ProcessedFile>handledFile){
+        ReportLog.logCurrentOperation("Раскрытие цифр в текстовое представление.");
         for (ProcessedFile currentFile : handledFile){
             ArrayList<String>cleanSentence = handleNumbers(currentFile.getSentences());
             currentFile.setSentences(cleanSentence);

@@ -1,12 +1,14 @@
 package ProcessingServices;
 
 import InputFile.InputFile;
+import ReportLog.ReportLog;
 
 import java.util.ArrayList;
 
 public class PunctuationMarkService {
 
     public static void handle(ArrayList<InputFile>inputFiles){
+        ReportLog.logCurrentOperation("Удаление лишних знаков препинания.");
         for (InputFile inputFile : inputFiles){
             handlePunctuationMarks(inputFile);
         }
@@ -17,7 +19,7 @@ public class PunctuationMarkService {
         String handledFileText = fileText.replaceAll("\\.{2,}", "\\.").replaceAll("%", "процент")
                 .replaceAll("\\+", " плюс ").replaceAll(";", "\\.")
                 .replaceAll("<(/?[^<>]*)>", " ").replaceAll(":", "")
-                .replaceAll("[\\W&&[^а-яА-ЯёЁ,?.!\\s]]", "");
+                .replaceAll("[\\W&&[^а-яА-ЯёЁ,?.!\\s]]", " ");
         inputFile.setFileText(handledFileText);
     }
 
