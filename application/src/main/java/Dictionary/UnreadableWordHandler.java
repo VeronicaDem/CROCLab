@@ -15,7 +15,7 @@ public class UnreadableWordHandler{
 
     private Pattern createPatternForUnreadableWord(String wordFromDictionary){
         String unreadableWordRegexp = wordFromDictionary.replaceAll("\\.", "\\\\.");
-        unreadableWordRegexp = "[\\s\b]" + unreadableWordRegexp + "[\\s\b]";
+        unreadableWordRegexp = "\\s" + unreadableWordRegexp + "[\\s\\n\\W]";
         Pattern unreadableWordPattern = Pattern.compile(unreadableWordRegexp);
         return unreadableWordPattern;
     }
