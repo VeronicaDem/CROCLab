@@ -1,13 +1,13 @@
 package Dictionary;
 
 import ReportLog.ReportLog;
-
 import java.io.File;
 import java.util.ArrayList;
 
 public class Dictionaries {
 
-    private ArrayList<Dictionary> dictionaries = new ArrayList<>();
+    private ArrayList<DictionaryWhitespaceWords> dictionaryWhitespaceWords = new ArrayList<>();
+    private ArrayList<DictionarySingleWords> dictionarySingleWords = new ArrayList<>();
 
     public Dictionaries(String dictionariesDirectoryPath){
         loadDictionaries(dictionariesDirectoryPath);
@@ -15,23 +15,29 @@ public class Dictionaries {
 
     private void loadDictionaries(String dictionariesDirectoryPath){
         ReportLog.logCurrentOperation("Загрузка словарей.");
-        File folder = new File(dictionariesDirectoryPath);
+        File singleWordsFolder = new File(dictionariesDirectoryPath + "/SingleWords");
+        File whitespaceWordsFolder = new File(dictionariesDirectoryPath + "/WhitespaceWords");
+        loadSingleWordsDictionaries(singleWordsFolder);
+        loadWhitespaceWordsDictionaries(whitespaceWordsFolder);
+    }
+
+    private void loadSingleWordsDictionaries(File folder){
         for (File file : folder.listFiles()){
-            if (!file.isDirectory()){
-                dictionaries.add(new Dictionary(file.getPath()));
-            }
+            dictionarySingleWords.add(new DictionarySingleWords(file.getPath()));
         }
     }
 
-    public ArrayList<Dictionary>getDictionaries(){
-        return dictionaries;
+    private void loadWhitespaceWordsDictionaries(File folder){
+        for (File file : folder.listFiles()) {
+            dictionaryWhitespaceWords.add(new DictionaryWhitespaceWords(file.getPath()));
+        }
     }
 
-    public String getReplacement(String unreadableWord){
-        String replacement = null;
-        for (Dictionary dictionary : dictionaries){
-            replacement = dictionary.getReplacements(unreadableWord);
-        }
-        return replacement;
+    public ArrayList<DictionaryWhitespaceWords> getDictionaryWhitespaceWords(){
+        return dictionaryWhitespaceWords;
+    }
+
+    public ArrayList<DictionarySingleWords> getDictionarySingleWords() {
+        return dictionarySingleWords;
     }
 }

@@ -1,6 +1,6 @@
 package ProcessingServices;
 
-import FileToProcess.ProcessedFile;
+import InputFile.InputFile;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 
 public class CleanerSentenceService {
 
-    public static void handle(ArrayList<ProcessedFile>processedFiles){
-        for (ProcessedFile currentFile : processedFiles){
-            removeEmptySentence(currentFile.getSentences());
+    public static void removeOneLetterSentences(ArrayList<InputFile>inputFiles){
+        for (InputFile inputFile : inputFiles){
+            removeEmptySentence(inputFile.getSentences());
         }
     }
 

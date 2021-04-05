@@ -1,6 +1,5 @@
 package ProcessingServices;
 
-import FileToProcess.ProcessedFile;
 import InputFile.InputFile;
 import ReportLog.ReportLog;
 
@@ -12,19 +11,14 @@ public class SentenceSeparator {
 
 
     //Принимает текст файла. Возвращает текст разбитый на список предложений.
-    public static ArrayList<ProcessedFile>getSentences(ArrayList<InputFile>inputFiles){
+    public static void splitOnSentences(ArrayList<InputFile>inputFiles){
         ReportLog.logCurrentOperation("Разделение текста на предложения.");
-        ArrayList<ProcessedFile>processedFiles = new ArrayList<>();
         for (InputFile inputFile : inputFiles){
-            ProcessedFile processedFile = new ProcessedFile(inputFile.getFileName());
-            ArrayList<String>fileSentences = splitOnSentences(inputFile);
-            processedFile.setSentences(fileSentences);
-            processedFiles.add(processedFile);
+            processFile(inputFile);
         }
-        return processedFiles;
     }
 
-    private static ArrayList<String>splitOnSentences(InputFile inputFile){
+    private static void processFile(InputFile inputFile){
         String fileText = inputFile.getFileText();
         ArrayList<String>fileSentences = new ArrayList<>();
         //Регулярное выражение для поиска предложений в строке.
@@ -34,7 +28,7 @@ public class SentenceSeparator {
             String foundSentence = fileText.substring(matcher.start(), matcher.end());
             fileSentences.add(foundSentence);
         }
-        return fileSentences;
+        inputFile.setSentences(fileSentences);
     }
 
 

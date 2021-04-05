@@ -1,13 +1,8 @@
 package Statistic;
 
-import FileToProcess.ProcessedFile;
+import InputFile.InputFile;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.*;
 
 
@@ -18,23 +13,22 @@ public class ProcessedFileStatistic {
     private String processedFileName;
     private int countWords = 0;
     private int countSentences = 0;
-    private transient Map<String, Integer> wordsStatistic = new LinkedHashMap<>();
-    private transient Map <String, Integer> sentencesStatistic = new LinkedHashMap<>();
-    private ArrayList<String>sortedWordsStatistic = new ArrayList<>();
-    private ArrayList<String>sortedSentencesStatistic = new ArrayList<>();
+    private  Map<String, Integer> wordsStatistic = new LinkedHashMap<>();
+    private  Map <String, Integer> sentencesStatistic = new LinkedHashMap<>();
 
 
-    public ProcessedFileStatistic(ProcessedFile processedFile){
-        this.outFileName = "StatisticProcessed" + processedFile.getFileName();
-        this.processedFileName = processedFile.getFileName();
-        generateWordsStatistic(processedFile);
-        generateSentencesStatistic(processedFile);
+
+    public ProcessedFileStatistic(InputFile inputFile){
+        this.outFileName = "StatisticProcessed" + inputFile.getFileName();
+        this.processedFileName = inputFile.getFileName();
+        generateWordsStatistic(inputFile);
+        generateSentencesStatistic(inputFile);
         sortMap();
     }
 
 
-    private void generateWordsStatistic(ProcessedFile processedFile){
-        ArrayList<String>sentences = processedFile.getSentences();
+    private void generateWordsStatistic(InputFile inputFile){
+        ArrayList<String>sentences = inputFile.getSentences();
         for (String sentence : sentences){
             String[]words = sentence.split(" ");
                 countWords += words.length;
@@ -50,8 +44,12 @@ public class ProcessedFileStatistic {
         }
     }
 
-    private void generateSentencesStatistic(ProcessedFile processedFile){
-        ArrayList<String>sentences = processedFile.getSentences();
+    public Map<String, Integer> getSentencesStatistic() {
+        return sentencesStatistic;
+    }
+
+    private void generateSentencesStatistic(InputFile inputFile){
+        ArrayList<String>sentences = inputFile.getSentences();
         countSentences = sentences.size();
         for (String sentence : sentences){
             String foundSentence = sentence.replaceAll("[.!?]", "");
@@ -72,21 +70,33 @@ public class ProcessedFileStatistic {
 
     private void sortMap(){
         List<Map.Entry<String, Integer>> sortedWStatistic = new ArrayList(wordsStatistic.entrySet());
+        Map<String, Integer>sortedWordsMap = new LinkedHashMap<>();
        sortedWStatistic.sort((o1, o2) -> o2.getValue() - o1.getValue());
        for (Map.Entry entry : sortedWStatistic){
            String key = (String)entry.getKey();
            Integer value = (Integer)entry.getValue();
-           sortedWordsStatistic.add(key + "-" + value.toString());
+           sortedWordsMap.put(key, value);
        }
+       wordsStatistic = sortedWordsMap;
 
         List<Map.Entry<String, Integer>> sortedSStatistic = new ArrayList(sentencesStatistic.entrySet());
+       Map<String, Integer>sortedSentencesMap = new LinkedHashMap<>();
         sortedSStatistic.sort((o1, o2) -> o2.getValue() - o1.getValue());
         for (Map.Entry entry : sortedSStatistic){
             String key = (String)entry.getKey();
             Integer value = (Integer)entry.getValue();
-            sortedSentencesStatistic.add(key + "-" + value.toString());
+            sortedSentencesMap.put(key, value);
         }
+        sentencesStatistic = sortedSentencesMap;
 
+    }
+
+    public int getCountWords() {
+        return countWords;
+    }
+
+    public int getCountSentences() {
+        return countSentences;
     }
 
     public String getOutFileName(){
@@ -100,23 +110,5 @@ public class ProcessedFileStatistic {
     public Map<String, Integer> getWordsStatistic() {
         return wordsStatistic;
     }
-
-
-    class StatisticComparator implements Comparator<Map.Entry<String, Integer>>{
-
-        private Map.Entry<String, Integer>statisticMap;
-
-        public StatisticComparator(Map.Entry<String, Integer>statisticMap){
-            this.statisticMap = statisticMap;
-        }
-
-        @Override
-        public int compare(Map.Entry<String, Integer>s1, Map.Entry<String, Integer> s2){
-            return s1.getValue() - s2.getValue();
-        }
-    }
-
-
-
 
 }

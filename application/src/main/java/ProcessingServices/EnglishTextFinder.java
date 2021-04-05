@@ -1,7 +1,7 @@
 package ProcessingServices;
 
-import FileToProcess.ProcessedFile;
 import InformationFiles.FileWithEnglishText;
+import InputFile.InputFile;
 import ReportLog.ReportLog;
 
 import java.util.ArrayList;
@@ -11,17 +11,17 @@ import java.util.regex.Pattern;
 public class EnglishTextFinder {
 
 
-    public static void findEnglishText(ArrayList<ProcessedFile>processedFiles){
+    public static void findEnglishText(ArrayList<InputFile>inputFiles){
         ReportLog.logCurrentOperation("Поиск английского текста.");
-        for (ProcessedFile processedFile : processedFiles){
-        processFile(processedFile);
+        for (InputFile inputFile : inputFiles){
+        processFile(inputFile);
         }
     }
 
-    private static void processFile(ProcessedFile processedFile){
-        ArrayList<String>fileSentences = processedFile.getSentences();
+    private static void processFile(InputFile inputFile){
+        ArrayList<String>fileSentences = inputFile.getSentences();
+        FileWithEnglishText fileWithEnglishText = inputFile.getFileWithEnglishText();
         for (String sentence : fileSentences) {
-            FileWithEnglishText fileWithEnglishText = processedFile.getFileWithEnglishText();
             Pattern englishTextPattern = Pattern.compile("[A-Za-z]");
             Matcher matcher = englishTextPattern.matcher(sentence);
             if (matcher.find()){

@@ -1,11 +1,6 @@
 package Dictionary;
 
-import com.google.gson.*;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class JsonDictionary {
 
@@ -43,17 +38,3 @@ class WordReplacements {
     }
 }
 
-//public class DictionaryDeserializer implements JsonDeserializer<JsonDictionary> {
-//    @Override
-//    public JsonDictionary deserialize(JsonElement jsonElement, Type type,
-//                                      JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-//        JsonDictionary dictionary = new JsonDictionary();
-//        JsonObject ob = jsonElement.getAsJsonObject();
-//        Map<String, ArrayList<String>> map = new HashMap<>();
-//        JsonArray arr = ob.getAsJsonArray("dictionaryWords");
-//        for (JsonElement e: arr) {
-//            map.put(e.getAsJsonObject().getAsJsonPrimitive("type").getAsString(),
-//                    e.getAsJsonArray("replacements"));
-//        }
-//        user.setOperations(map);
-//        return user;

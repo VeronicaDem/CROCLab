@@ -1,6 +1,5 @@
 package Statistic;
 
-import FileToProcess.ProcessedFile;
 import Handler.Handler;
 import InputFile.InputFile;
 import InformationFiles.FileWithAbbreviations;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 
 public class Statistic {
 
-    private ArrayList<ProcessedFile>processedFiles;
+    private ArrayList<InputFile>inputFiles;
     private ArrayList<QuarantineStatisticFiles> quarantineStatisticFiles = new ArrayList<>();
     private ArrayList<ProcessedFileStatistic> processedFilesStatistic = new ArrayList<>();
     private ArrayList<RowFileStatistic> rowFilesStatistic = new ArrayList<>();
@@ -24,17 +23,13 @@ public class Statistic {
 
 
 
-    public Statistic(String outputDirectory, ArrayList<InputFile>rowFiles, ArrayList<ProcessedFile>processedFiles){
-        this.processedFiles = processedFiles;
-        for (ProcessedFile processedFile : processedFiles){
-         quarantineStatisticFiles.add(new QuarantineStatisticFiles(processedFile.getQuarantineFile()));
-        }
-        for (ProcessedFile processedFile : processedFiles){
-            this.processedFilesStatistic.add(new ProcessedFileStatistic(processedFile));
-        }
+    public Statistic(String outputDirectory, ArrayList<InputFile>rowFiles){
+        this.inputFiles = rowFiles;
         for (InputFile inputFile : rowFiles){
             this.rowFilesStatistic.add(new RowFileStatistic(inputFile));
             this.filesWithAbbreviations.add(inputFile.getFileWithAbbreviations());
+            this.quarantineStatisticFiles.add(new QuarantineStatisticFiles(inputFile.getQuarantineFile()));
+            this.processedFilesStatistic.add(new ProcessedFileStatistic(inputFile));
         }
         this.statisticFilesDir = outputDirectory + "/StatisticFiles";
     }
@@ -60,8 +55,10 @@ public class Statistic {
             ex.printStackTrace();
         }
         generateStatisticEachFile(eachFileStatisticDir);
+        //Создание общей статистики по обработанным файлам
         GeneralProcessedFilesStatistic generalProcessedStatistic = new GeneralProcessedFilesStatistic(processedFilesStatistic);
-        generalProcessedStatistic.create(generalFilesStatisticDir);
+        generalProcessedStatistic.createGeneralStatisticFile(generalFilesStatisticDir);
+        //Создание статистики по карантину
         generateQuarantineStatistic(quarantineStatisticDir);
         generateRowFilesStatistic(rowFilesStatisticDir);
         generateUserStatistic(userStatisticDir);
@@ -113,9 +110,8 @@ public class Statistic {
     }
 
     private void generateFilesWithEnglish(String outDir){
-
-        for (ProcessedFile processedFile : processedFiles){
-            processedFile.getFileWithEnglishText().createFile(outDir);
+        for (InputFile inputFile : inputFiles){
+            inputFile.getFileWithEnglishText().createFile(outDir);
         }
     }
 

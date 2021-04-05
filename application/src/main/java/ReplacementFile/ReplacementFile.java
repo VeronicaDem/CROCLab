@@ -2,17 +2,19 @@ package ReplacementFile;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-
+import java.util.*;
 
 
 public class ReplacementFile {
 
     private String processedFileName;
     private int countReplacement = 0;
-    private ArrayList<Replacement> replacements = new ArrayList<>();
+    private transient Map<Replacement, Integer> replacementsCount = new HashMap<>();
     private transient String fileName;
+    @SerializedName("replacements")
+    private ArrayList<Replacement>replacementForOut = new ArrayList<>();
 
 
     public ReplacementFile(String processedFileName){
@@ -22,17 +24,26 @@ public class ReplacementFile {
 
     public void addReplacement(String unreadableWord, String replacement, String description){
         Replacement newReplacement = new Replacement(unreadableWord, replacement, description);
-        replacements.add(newReplacement);
+        if (replacementsCount.containsKey(newReplacement)) {
+            Integer countReplacement = replacementsCount.get(newReplacement);
+            replacementsCount.replace(newReplacement, ++countReplacement);
+        }else{
+            replacementsCount.put(newReplacement, 1);
+        }
         countReplacement++;
     }
 
 
 
-    public ArrayList<Replacement>getReplacements(){
-        return replacements;
+    public Map<Replacement, Integer> getReplacementsCount(){
+        return replacementsCount;
     }
 
-    public String getJsonFormat(){
+    public String getJsonFormat() {
+        if (replacementForOut.size() == 0) {
+            initializeOutList();
+            sortOutList();
+        }
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String result = gson.toJson(this);
         return result;
@@ -42,10 +53,30 @@ public class ReplacementFile {
         return fileName;
     }
 
+    private void initializeOutList(){
+        for (Map.Entry entries : replacementsCount.entrySet()) {
+            Replacement replacement = (Replacement) entries.getKey();
+            Integer countReplacement = (Integer) entries.getValue();
+            replacement.countIdenticalReplacements = countReplacement;
+            replacementForOut.add(replacement);
+        }
+    }
+
+    private void sortOutList(){
+        replacementForOut.sort(Comparator.comparing(r -> r.countIdenticalReplacements));
+        Collections.reverse(replacementForOut);
+    }
+
+
+
+
+
     class Replacement{
         private String unreadableWord;
         private String replacement;
         private String description;
+        @SerializedName("count")
+        private Integer countIdenticalReplacements;
 
         public Replacement(String unreadableWord, String replacement, String description) {
             this.unreadableWord = unreadableWord;
@@ -53,8 +84,28 @@ public class ReplacementFile {
             this.description = description;
         }
 
-        public String toString(){
-            return "Нечитаемое слово-" + unreadableWord + " заменено на-" + replacement + "; Описание замены-" + description;
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = result * prime + (unreadableWord == null ? 0 : unreadableWord.hashCode());
+            result = result * prime + (replacement == null ? 0 : replacement.hashCode());
+            result = result * prime + (description == null ? 0 : description.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj){
+                return true;
+            }
+            if (obj == null || this.getClass() != obj.getClass()){
+                return false;
+            }
+            Replacement objReplacement = (Replacement)obj;
+            return (this.unreadableWord.equals(objReplacement.unreadableWord))
+                    && (this.description.equals(objReplacement.description))
+                    && (this.replacement.equals(objReplacement.replacement));
         }
     }
 

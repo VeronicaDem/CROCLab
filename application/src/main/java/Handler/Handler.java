@@ -1,14 +1,15 @@
 package Handler;
 
 import Dictionary.Dictionaries;
-import FileToProcess.ProcessedFile;
 import InputFile.InputFilesLoader;
 import InputFile.InputFile;
 import NumberService.NumberService;
 import ProcessingServices.*;
 import Properties.PropertyLoader;
-import Quarantine.Quarantine;
+import Quarantine.QuarantineCreator;
 import ReplacementFile.CreatorReplacementFile;
+import ReplacingWords.ReplacerSingleWords;
+import ReplacingWords.ReplacerSpaceWords;
 import ReportLog.ReportLog;
 import Statistic.Statistic;
 
@@ -18,12 +19,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class Handler {
 
     private ArrayList<InputFile> inputFiles;
-    private ArrayList<ProcessedFile> processedFiles = new ArrayList<>();
+//    private ArrayList<ProcessedFile> processedFiles = new ArrayList<>();
     private static Dictionaries dictionaries;
     private static PropertyLoader property;
     private Statistic statistic;
@@ -39,51 +39,42 @@ public class Handler {
         inputFiles = InputFilesLoader.loadInputFiles(property.getInputFilesDirectory());
         System.out.println(Calendar.getInstance().getTime().toString());
         dictionaries = new Dictionaries(property.getDictionariesDirectory());
-
-        ReplacementFromDictionaryService.handle(dictionaries.getDictionaries(), inputFiles);
-
+        //Обработка слов которые содержат пробелы(# в. ч. -> войсковая часть)
+        ReplacerSpaceWords.handleWhitespaceWords(dictionaries.getDictionaryWhitespaceWords(), inputFiles);
+        //Обработка слов которые не содержат пробелы(# гор. -> город)
+        ReplacerSingleWords.handleSingleWords(dictionaries.getDictionarySingleWords(), inputFiles);
         //Обработка дней недели
         DaysOfWeekHandler.handleDaysOfWeek(inputFiles);
-
         //Обработка сокращений( вида - гор./м./г./...)
         AbbreviationFinder.processAbbreviations(inputFiles);
-
         //Удаляем ссылки из предложений
         LinkService.handle(inputFiles);
-
         //Обработка мобильных номеров телефонов
         PhoneNumberService.handle(inputFiles);
         //Обработка знаков препинания и спец. символов.
         PunctuationMarkService.handle(inputFiles);
-
-        //Для каждого объекта inputFile создаётся объект processedFile. В processedFile хранится текст разбитый на
-        //предложения. Далее вся обработка будет происхожить со списком объектов processedFile.
-        processedFiles = SentenceSeparator.getSentences(inputFiles);
+        //ДРазбиваем файлы на предложения.
+        SentenceSeparator.splitOnSentences(inputFiles);
         //Раскрываем числа в текст.
-        NumberService.handle(processedFiles);
-
+        NumberService.handleNumbers(inputFiles);
         //Удаляем лишние пробелы из предложения.
-        removeWhitespace();
+        WhitespaceService.removeExtraWhitespace(inputFiles);
         //Находим все предложения содержащие английский текст
-        EnglishTextFinder.findEnglishText(processedFiles);
+        EnglishTextFinder.findEnglishText(inputFiles);
         if (property.getEnableEnglishText()) {
             //Отправляем в карантин предложения содержащие английские буквы.
-            EnglishTextRemover.handle(processedFiles);
+            EnglishTextRemover.removeEnglishText(inputFiles);
         }
-
         //Отправляем акронимы в карантин
-        AcronymService.handle(processedFiles);
-
+        AcronymService.acronymsInQuarantine(inputFiles);
         //Предложения содержащие CamelCase отправляются в карантин.
-        CamelCaseRemover.removeCamelCase(processedFiles);
+        CamelCaseRemover.removeCamelCase(inputFiles);
         //Удаляем пустые предложения и предложения с одной буквой.
-        CleanerSentenceService.handle(processedFiles);
+        CleanerSentenceService.removeOneLetterSentences(inputFiles);
         //Создаём файлы статистики
-        statistic = new Statistic(property.getOutDirectory(), inputFiles, processedFiles);
+        statistic = new Statistic(property.getOutDirectory(), inputFiles);
         //Создаём выходной файл.
         createOutputFiles();
-
-
     }
 
 
@@ -107,14 +98,6 @@ public class Handler {
         return filesTexts;
     }
 
-
-
-    //Удаляем лишние пробелы из предложения.
-    private void removeWhitespace(){
-        WhitespaceService.handle(processedFiles);
-    }
-
-
     //Создаёт выходной файл.
     public void createOutputFiles(){
         ReportLog.logCurrentOperation("Создание выходных файлов.");
@@ -125,21 +108,20 @@ public class Handler {
             ex.printStackTrace();
         }
         createProcessedFiles(processedFilesDir);
-        Quarantine quarantine = new Quarantine(property.getOutDirectory(), processedFiles);
-        quarantine.createQuarantine();
+        QuarantineCreator.createQuarantine(property.getOutDirectory(), inputFiles);
         CreatorReplacementFile.createReplacementFile(property.getOutDirectory(), inputFiles);
         createStatisticFiles();
     }
 
 
     public void createProcessedFiles(String outDir){
-        for (ProcessedFile currentFile : processedFiles){
-            currentFile.createOutputFile(outDir, property.getOutFileSize());
+        for (InputFile inputFile : inputFiles){
+            inputFile.createOutputFile(outDir, property.getOutFileSize());
         }
     }
 
     private void createStatisticFiles(){
-        statistic = new Statistic(property.getOutDirectory(), inputFiles, processedFiles);
+        statistic = new Statistic(property.getOutDirectory(), inputFiles);
         statistic.createStatisticFiles();
     }
 
