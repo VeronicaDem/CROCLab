@@ -20,11 +20,7 @@ public class CreatorReplacementFile {
         }
         for (InputFile inputFile : inputFiles) {
             ReplacementFile replacementFile = inputFile.getReplacementFile();
-            try (OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(currentDir + "/" + replacementFile.getFileName()))){
-                os.write(replacementFile.getJsonFormat());
-            }catch(IOException ex){
-                ex.printStackTrace();
-            }
+            replacementFile.createFile(currentDir);
         }
     }
 }

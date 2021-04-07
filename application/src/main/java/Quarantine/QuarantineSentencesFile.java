@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.regex.Pattern;
 
 public class QuarantineSentencesFile {
@@ -37,11 +38,12 @@ public class QuarantineSentencesFile {
 
     //создается выходной файл с карантинными предложениями для определённого входного файла.
     public void create(String outDir){
-        try(OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(outDir + "/" + fileName), "UTF-8")){
-            String result = getJsonFormat();
-            os.write(result);
-        }catch(IOException ex){
-            ex.printStackTrace();
+        if (!fileIsEmpty()) {
+            try (OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(outDir + "/" + fileName), "UTF-8")) {
+                os.write(getJsonFormat());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -53,6 +55,10 @@ public class QuarantineSentencesFile {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String result = gson.toJson(this);
         return result;
+    }
+
+    private boolean fileIsEmpty(){
+        return quarantineSentences.size() == 0;
     }
 }
 

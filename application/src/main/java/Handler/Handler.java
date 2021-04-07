@@ -23,7 +23,6 @@ import java.util.Calendar;
 public class Handler {
 
     private ArrayList<InputFile> inputFiles;
-//    private ArrayList<ProcessedFile> processedFiles = new ArrayList<>();
     private static Dictionaries dictionaries;
     private static PropertyLoader property;
     private Statistic statistic;

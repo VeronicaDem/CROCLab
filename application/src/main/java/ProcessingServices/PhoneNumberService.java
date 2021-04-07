@@ -3,7 +3,6 @@ package ProcessingServices;
 import InputFile.InputFile;
 import NumberService.NumberService;
 
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +26,7 @@ public class PhoneNumberService {
             String foundPhoneNumber = fileText.substring(matcher.start(), matcher.end());
             boolean containsPlus = foundPhoneNumber.contains("+");
             foundPhoneNumber = foundPhoneNumber.replaceAll("[\\s+()-]", "");
-            String replacement = NumberService.numberToSymbol(foundPhoneNumber.substring(0,1))
+            String replacement = NumberService.numberToSymbol(foundPhoneNumber.substring(0, 1))
                     + NumberService.numberToSymbol(foundPhoneNumber.substring(1,4))
                     + NumberService.numberToSymbol(foundPhoneNumber.substring(4, 7))
                     + NumberService.numberToSymbol(foundPhoneNumber.substring(7, 9))

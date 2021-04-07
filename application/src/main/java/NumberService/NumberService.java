@@ -26,8 +26,7 @@ public class NumberService {
             StringBuffer result = new StringBuffer();
             while(matcher.find()){
                 String foundNumber = sentence.substring(matcher.start(), matcher.end()).trim();
-                Long number = Long.parseLong(foundNumber);
-                String replacement = NumberHandler.numberToSymbol(number, number);
+                String replacement = NumberHandler.resolveZeroes(foundNumber);
                 matcher.appendReplacement(result, " " + replacement + " ");
             }
             matcher.appendTail(result);
@@ -38,8 +37,7 @@ public class NumberService {
 
     public static String numberToSymbol(String number){
         String result;
-        Long numberToReplace = Long.parseLong(number);
-        result = NumberHandler.numberToSymbol(numberToReplace, numberToReplace);
+        result = NumberHandler.resolveZeroes(number);
         return result;
     }
 }

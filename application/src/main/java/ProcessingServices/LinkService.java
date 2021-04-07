@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class LinkService {
 
-    private static final String[] linksRegex = {"https?:\\/\\/\\S+[^.?!\\s]",
-    "([\\w\\._]+)@\\1\\.([a-z]{2,6}\\.?)"};
+    private static final String[] linksRegex = {"(https?:\\/\\/)?([\\w-]{1,32}\\.[\\w-]{1,32})[^\\s@]*",
+    "([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}"};
 
     public static void handle(ArrayList<InputFile> inputFiles){
         for (InputFile inputFile : inputFiles){

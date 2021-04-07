@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ExcelParser {
 
@@ -40,7 +42,18 @@ public class ExcelParser {
             HSSFRow currentRow = (HSSFRow) rowBIterator.next();
             HSSFCell cellB = currentRow.getCell(1);
             if (cellB.getCellType() == Cell.CELL_TYPE_STRING){
-                excelFileText.append(cellB.getStringCellValue()).append("\n");
+
+                Pattern phoneNumberPattern = Pattern.compile("-->");
+                Matcher matcher = phoneNumberPattern.matcher(cellB.getStringCellValue());
+
+                if (matcher.find()) {
+                    int index = matcher.start();
+                    String subStr = cellB.getStringCellValue().substring(0, index);
+                    excelFileText.append(subStr).append("\n");
+                }else {
+                    excelFileText.append(cellB.getStringCellValue()).append("\n");
+                }
+
             }
         }
         filesTexts.put(excelFile.getName() ,excelFileText.toString());

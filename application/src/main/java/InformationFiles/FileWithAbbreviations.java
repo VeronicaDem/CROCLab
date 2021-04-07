@@ -23,10 +23,12 @@ public class FileWithAbbreviations {
     }
 
     public void createFile(String outDir){
-        try(OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(outDir + "/AbbreviationSentences" + inputFileName))){
-            os.write(getJsonFormat());
-        }catch(IOException ex){
-            ex.printStackTrace();
+        if (!fileIsEmpty()) {
+            try (OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(outDir + "/AbbreviationSentences" + inputFileName))) {
+                os.write(getJsonFormat());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
 
     }
@@ -34,6 +36,10 @@ public class FileWithAbbreviations {
     private String getJsonFormat(){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
+    }
+
+    private boolean fileIsEmpty(){
+        return sentencesWithAbbreviation.size() == 0;
     }
 
 }

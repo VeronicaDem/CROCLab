@@ -86,12 +86,7 @@ public class Statistic {
 
     private void generateQuarantineStatistic(String dir){
         for (QuarantineStatisticFiles quarantineStatisticFile : quarantineStatisticFiles){
-            try(OutputStreamWriter os = new OutputStreamWriter
-                    (new FileOutputStream(dir + "/" +  quarantineStatisticFile.getFileName()), "UTF-8")){
-                os.write(quarantineStatisticFile.getJsonStatistic());
-            }catch(IOException ex){
-                ex.printStackTrace();
-            }
+            quarantineStatisticFile.createFile(dir);
         }
     }
 

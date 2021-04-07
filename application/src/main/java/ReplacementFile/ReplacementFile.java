@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.*;
 
 
@@ -31,12 +34,6 @@ public class ReplacementFile {
             replacementsCount.put(newReplacement, 1);
         }
         countReplacement++;
-    }
-
-
-
-    public Map<Replacement, Integer> getReplacementsCount(){
-        return replacementsCount;
     }
 
     public String getJsonFormat() {
@@ -67,7 +64,19 @@ public class ReplacementFile {
         Collections.reverse(replacementForOut);
     }
 
+    public void createFile(String outDir) {
+        if (!fileIsEmpty()) {
+            try (OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(outDir + "/" + fileName))) {
+                os.write(getJsonFormat());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
+    private boolean fileIsEmpty(){
+        return replacementsCount.size() == 0;
+    }
 
 
 

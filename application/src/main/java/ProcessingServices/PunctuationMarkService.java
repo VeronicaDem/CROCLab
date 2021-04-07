@@ -18,7 +18,7 @@ public class PunctuationMarkService {
         String fileText = inputFile.getFileText();
         String handledFileText = fileText.replaceAll("\\.{2,}", "\\.").replaceAll("%", "процент")
                 .replaceAll("\\+", " плюс ").replaceAll(";", "\\.")
-                .replaceAll("<(/?[^<>]*)>", " ").replaceAll(":", "")
+                .replaceAll("<(/?[^<>]*)>", " ").replaceAll(":", " ")
                 .replaceAll("[\\W&&[^а-яА-ЯёЁ,?.!\\s]]", " ");
         inputFile.setFileText(handledFileText);
     }

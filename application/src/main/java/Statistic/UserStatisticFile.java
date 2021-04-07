@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class UserStatisticFile {
@@ -16,7 +17,6 @@ public class UserStatisticFile {
     private String filePath;
     private ArrayList<String> wordsForUserStatistic;
     private String userStatisticFileName;
-    private ArrayList<ProcessedFileUserStatistic>processedFileUserStatistics = new ArrayList<>();
     private ArrayList<ProcessedFileStatistic>processedFileStatistics;
 
 
@@ -58,33 +58,38 @@ public class UserStatisticFile {
         }
     }
 
-    public String getUserStatisticFileName() {
-        return userStatisticFileName;
-    }
-
 
 
 
     class ProcessedFileUserStatistic{
 
         private String processedFileName;
-        private Map<String, Integer>userStatistic;
+        private Map<String, Integer>userStatistic = new LinkedHashMap<>();
 
         public ProcessedFileUserStatistic(ProcessedFileStatistic processedFileStatistic){
             this.processedFileName = processedFileStatistic.getProcessedFileName();
-            this.userStatistic = createStatistic(processedFileStatistic);
+            createStatistic(processedFileStatistic);
         }
 
-        private Map<String, Integer>createStatistic(ProcessedFileStatistic processedFileStatistic){
+        private void createStatistic(ProcessedFileStatistic processedFileStatistic){
             Map<String, Integer>processedWordsStatistic = processedFileStatistic.getWordsStatistic();
-            Map<String, Integer>userStatistic = new HashMap<>();
             for (String wordForStatistic : wordsForUserStatistic){
                 if (processedWordsStatistic.containsKey(wordForStatistic)){
                     Integer countWordInFile = processedWordsStatistic.get(wordForStatistic);
                     userStatistic.put(wordForStatistic, countWordInFile);
                 }
             }
-            return userStatistic;
+            sortStatistic();
+        }
+
+        private void sortStatistic(){
+            ArrayList<Map.Entry<String, Integer>>sortedStatisticEntries = new ArrayList<>(userStatistic.entrySet());
+            sortedStatisticEntries.sort((w1, w2) -> (w2.getValue() - w1.getValue()) );
+            Map<String, Integer>sortedStatisticMap = new LinkedHashMap<>();
+            for (Map.Entry<String, Integer> entries : sortedStatisticEntries){
+                sortedStatisticMap.put(entries.getKey(), entries.getValue());
+            }
+            userStatistic = sortedStatisticMap;
         }
 
         private String getJsonFormat(){
@@ -93,12 +98,18 @@ public class UserStatisticFile {
         }
 
         public void createFile(String outDir){
-            try(OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(outDir + "/" + userStatisticFileName + processedFileName))){
-                os.write(getJsonFormat());
-            }catch(IOException ex){
-                ex.printStackTrace();
+            if (!fileIsEmpty()) {
+                try (OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(outDir + "/" + userStatisticFileName + processedFileName))) {
+                    os.write(getJsonFormat());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
 
+        }
+
+        private boolean fileIsEmpty(){
+            return userStatistic.size() == 0;
         }
     }
 }
