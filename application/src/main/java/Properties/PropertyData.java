@@ -2,13 +2,29 @@ package Properties;
 
 public class PropertyData {
     private String inputFilesDirectory;
-    private String[] characterToDelete ;
-    private Integer outputFileSize ;
-    private String outputDirectory ;
+    private Integer outputFileSize;
+    private String outputDirectory;
     private String dictionariesDirectory;
     private String[] filesForStatisticPaths;
     private String enableEnglishText;
+    private String protectedWordsDir;
+    private String wordsToDeleteDir;
 
+    public String getWordsToDeleteDir() {
+        return wordsToDeleteDir;
+    }
+
+    public void setWordsToDeleteDir(String wordsToDeleteDir) {
+        this.wordsToDeleteDir = wordsToDeleteDir;
+    }
+
+    public String getProtectedWordsDir() {
+        return protectedWordsDir;
+    }
+
+    public void setProtectedWordsDir(String protectedWordsDir) {
+        this.protectedWordsDir = protectedWordsDir;
+    }
 
     public String getEnableEnglishText() {
         return enableEnglishText;
@@ -22,13 +38,6 @@ public class PropertyData {
     }
     public void setInputFilesDirectory(String inputFilesDirectory) {
         this.inputFilesDirectory = inputFilesDirectory;
-    }
-
-    public String[] getCharacterToDelete() {
-        return characterToDelete;
-    }
-    public void setCharacterToDelete(String[] characterToDelete) {
-        this.characterToDelete = characterToDelete;
     }
 
     public Integer getOutputFileSize() {

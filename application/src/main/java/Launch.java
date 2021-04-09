@@ -17,16 +17,6 @@ public class Launch {
         System.out.println("Время на обработку файла = " + (endTime - startTime));
 
 
-//        FileInputStream fis = new FileInputStream("C:/Users/ivan/Desktop/CROCLab/Files/InputFile_abbrev.txt");
-//        UniversalDetector detector = new UniversalDetector(null);
-//        int countReadByte;
-//        byte[] buff = new byte[fis.available()];
-//        while ((countReadByte = fis.read(buff)) > 0 && !detector.isDone()){
-//            detector.handleData(buff, 0, countReadByte);
-//        }
-//        detector.dataEnd();
-//        String encoding = detector.getDetectedCharset();
-//        System.out.println(encoding);
     }
 
 }

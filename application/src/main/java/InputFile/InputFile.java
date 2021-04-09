@@ -2,9 +2,9 @@ package InputFile;
 
 import InformationFiles.FileWithAbbreviations;
 import InformationFiles.FileWithEnglishText;
-import ProcessingServices.EncodingService;
 import Quarantine.QuarantineSentencesFile;
 import ReplacementFile.ReplacementFile;
+import WordsToDelete.DeletedWordsStorage;
 import org.apache.any23.encoding.TikaEncodingDetector;
 
 import java.io.*;
@@ -23,6 +23,7 @@ public class InputFile {
     private QuarantineSentencesFile quarantineFile;
     private FileWithEnglishText fileWithEnglishText;
     private ArrayList<String> sentences = new ArrayList<>();
+    private DeletedWordsStorage deletedWordsStorage;
 
 
     public InputFile(String filePath) {
@@ -32,11 +33,12 @@ public class InputFile {
 //        if (!validEncoding) {
 //            this.filePath = EncodingService.changeEncoding(filePath);
 //        }
-        readData();
+        readFile();
         this.replacementFile = new ReplacementFile(fileName);
         this.fileWithAbbreviations = new FileWithAbbreviations(fileName);
         this.quarantineFile = new QuarantineSentencesFile(fileName);
         this.fileWithEnglishText = new FileWithEnglishText(fileName);
+        this.deletedWordsStorage = new DeletedWordsStorage(fileName);
     }
 
     public String getFileText() {
@@ -48,7 +50,7 @@ public class InputFile {
     }
 
     //Считывает данные из файла в одну строку.
-    private void readData() {
+    private void readFile() {
         StringBuilder fileData = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8"))) {
             String readData = "";
@@ -116,6 +118,10 @@ public class InputFile {
             e.printStackTrace();
         }
         return fileEncoding.equals("UTF-8");
+    }
+
+    public DeletedWordsStorage getDeletedWordsStorage() {
+        return deletedWordsStorage;
     }
 
     public void moveToQuarantine(String sentence){

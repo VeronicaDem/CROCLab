@@ -4,6 +4,9 @@ import Dictionary.DictionarySingleWords;
 import InputFile.InputFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.regex.Pattern;
 
 public class ReplacerSingleWords {
 
@@ -34,7 +37,7 @@ public class ReplacerSingleWords {
     }
 
     private static String getDotTokenReplacement(InputFile inputFile, String wordToken, DictionarySingleWords dictionarySingleWords){
-        String dotToken = wordToken.substring(0, wordToken.indexOf(".") + 1);
+        String dotToken = wordToken.substring(0, wordToken.lastIndexOf(".") + 1);
         String dotTokenReplacement = dictionarySingleWords.getSingleWordReplacement(dotToken);
         if (dotTokenReplacement != null){
             inputFile.getReplacementFile().addReplacement(dotToken, dotTokenReplacement, "dictionarySingleWord");
@@ -47,4 +50,5 @@ public class ReplacerSingleWords {
         String fileText = inputFile.getFileText();
         return fileText.split(" ");
     }
+
 }

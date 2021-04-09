@@ -1,7 +1,7 @@
 package ProcessingServices;
 
+import FileWordsToExclude.ProtectedWordsStorage;
 import InputFile.InputFile;
-import org.apache.xmlbeans.impl.regex.Match;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -18,10 +18,14 @@ public class AcronymService {
     private static void handleAcronyms(InputFile fileWithAcronym){
         ArrayList<String>fileSentences = new ArrayList<>(fileWithAcronym.getSentences());
         for (String sentence : fileSentences){
-            Pattern acronymPattern = Pattern.compile("([а-я]+)(\\s[А-ЯёЁ]{2,5}\\s)([а-я]+)");
+            Pattern acronymPattern = Pattern.compile("(?<=^|[\\W&&[^А-Яа-я]])[А-ЯЁ]{2,5}(?=$|[\\W&&[^А-Яа-я]])");
             Matcher matcher = acronymPattern.matcher(sentence);
             if (matcher.find()){
-                fileWithAcronym.moveToQuarantine(sentence);
+                String foundAcronym = sentence.substring(matcher.start(), matcher.end());
+                if (!ProtectedWordsStorage.isWordProtected(foundAcronym)) {//Если найденного слова нет в списке исключений,
+                    //помещаем в карантин предложение, в котором оно находится.
+                    fileWithAcronym.moveToQuarantine(sentence);
+                }
             }
         }
 

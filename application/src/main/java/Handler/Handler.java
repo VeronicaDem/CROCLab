@@ -1,6 +1,7 @@
 package Handler;
 
 import Dictionary.Dictionaries;
+import FileWordsToExclude.ProtectedWordsStorage;
 import InputFile.InputFilesLoader;
 import InputFile.InputFile;
 import NumberService.NumberService;
@@ -12,6 +13,7 @@ import ReplacingWords.ReplacerSingleWords;
 import ReplacingWords.ReplacerSpaceWords;
 import ReportLog.ReportLog;
 import Statistic.Statistic;
+import WordsToDelete.WordsRemover;
 
 
 import java.io.IOException;
@@ -26,9 +28,11 @@ public class Handler {
     private static Dictionaries dictionaries;
     private static PropertyLoader property;
     private Statistic statistic;
+    private ProtectedWordsStorage protectedWordsStorage;
 
     public Handler(String propertyFile){
         property = new PropertyLoader(propertyFile);
+        protectedWordsStorage = new ProtectedWordsStorage(property);
         handle();
     }
 
@@ -38,6 +42,8 @@ public class Handler {
         inputFiles = InputFilesLoader.loadInputFiles(property.getInputFilesDirectory());
         System.out.println(Calendar.getInstance().getTime().toString());
         dictionaries = new Dictionaries(property.getDictionariesDirectory());
+        //Удаление слов, которые пользователь добавил в файл
+        WordsRemover.WordsRemover(property, inputFiles);
         //Обработка слов которые содержат пробелы(# в. ч. -> войсковая часть)
         ReplacerSpaceWords.handleWhitespaceWords(dictionaries.getDictionaryWhitespaceWords(), inputFiles);
         //Обработка слов которые не содержат пробелы(# гор. -> город)
@@ -68,8 +74,6 @@ public class Handler {
         AcronymService.acronymsInQuarantine(inputFiles);
         //Предложения содержащие CamelCase отправляются в карантин.
         CamelCaseRemover.removeCamelCase(inputFiles);
-        //Удаляем пустые предложения и предложения с одной буквой.
-        CleanerSentenceService.removeOneLetterSentences(inputFiles);
         //Создаём файлы статистики
         statistic = new Statistic(property.getOutDirectory(), inputFiles);
         //Создаём выходной файл.

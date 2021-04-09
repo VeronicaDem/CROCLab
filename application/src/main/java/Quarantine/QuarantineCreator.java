@@ -25,9 +25,12 @@ public class QuarantineCreator {
 
 
     private static void createQuarantineSentencesFiles(String outDir, ArrayList<InputFile>inputFiles){
+        ArrayList<QuarantineSentencesFile>quarantineSentencesFiles = new ArrayList<>();
         for (InputFile inputFile : inputFiles){
-            inputFile.getQuarantineFile().create(outDir);
+            quarantineSentencesFiles.add(inputFile.getQuarantineFile());
         }
+        GeneralQuarantineSentencesFile generalQuarantineSentencesFile = new GeneralQuarantineSentencesFile(quarantineSentencesFiles);
+        generalQuarantineSentencesFile.create(outDir);
     }
 
 }

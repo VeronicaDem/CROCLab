@@ -27,14 +27,9 @@ public class QuarantineSentencesFile {
     }
 
     public ArrayList<String> getQuarantineSentences() {
-        removeUselessSentences();
         return quarantineSentences;
     }
 
-    private void removeUselessSentences(){
-        String uselessSentences = "^[А-ЯёЁA-Za-z](?=[!?.])$";
-        quarantineSentences.removeIf(sentence -> Pattern.matches(uselessSentences, sentence));
-    }
 
     //создается выходной файл с карантинными предложениями для определённого входного файла.
     public void create(String outDir){
@@ -62,21 +57,4 @@ public class QuarantineSentencesFile {
     }
 }
 
-class QuarantineSentence{
-    private String unreadableSentence;
-    private String description;
 
-    public QuarantineSentence(String unreadableSentence, String description){
-        this.unreadableSentence = unreadableSentence;
-        this.description = description;
-    }
-
-    public String getUnreadableSentence() {
-        return unreadableSentence;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-}

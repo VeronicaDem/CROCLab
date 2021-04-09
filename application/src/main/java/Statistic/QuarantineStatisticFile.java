@@ -3,23 +3,21 @@ package Statistic;
 import Quarantine.QuarantineSentencesFile;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class QuarantineStatisticFiles {
+public class QuarantineStatisticFile {
 
     private String processedFileName;
     private transient String fileName;
     private transient QuarantineSentencesFile quarantineSentencesFile;
     private Map<String, Integer>quarantineSentencesStatistic = new LinkedHashMap<>();
 
-    public QuarantineStatisticFiles(QuarantineSentencesFile quarantineSentencesFile){
+    public QuarantineStatisticFile(QuarantineSentencesFile quarantineSentencesFile){
         this.processedFileName = quarantineSentencesFile.getFileName();
         this.quarantineSentencesFile = quarantineSentencesFile;
         generateQuarantineSentencesStatistic();
@@ -69,6 +67,10 @@ public class QuarantineStatisticFiles {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String result = gson.toJson(this);
         return result;
+    }
+
+    public Map<String, Integer> getQuarantineSentencesStatistic() {
+        return quarantineSentencesStatistic;
     }
 
     private boolean fileIsEmpty(){

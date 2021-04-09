@@ -8,11 +8,12 @@ import java.util.Scanner;
 
 public class PropertyLoader {
     String inputFilesDirectory = null;
-    String[] charsToDelete = null;
     Integer outFileSize = null;
     String outDirectory = null;
     String dictionariesDirectory = null;
     String[] filesForStatisticPaths = null;
+    String protectedWordsDir = null;
+    String wordsToDeleteDir = null;
     boolean enableEnglishText = false;
 
     public PropertyLoader(String filePath){
@@ -33,12 +34,13 @@ public class PropertyLoader {
             PropertyData propertyData = gson.fromJson(fileContent , PropertyData.class);
 
             inputFilesDirectory = propertyData.getInputFilesDirectory();
-            charsToDelete = propertyData.getCharacterToDelete();
             outFileSize = propertyData.getOutputFileSize();
             outDirectory = propertyData.getOutputDirectory();
             dictionariesDirectory = propertyData.getDictionariesDirectory();
             enableEnglishText = propertyData.getEnableEnglishText().toLowerCase().equals("true");
             filesForStatisticPaths = propertyData.getFilesForStatisticPaths();
+            protectedWordsDir = propertyData.getProtectedWordsDir();
+            wordsToDeleteDir = propertyData.getWordsToDeleteDir();
             correctStatisticFilesPaths();
 
         }catch(IOException e){
@@ -57,9 +59,6 @@ public class PropertyLoader {
     public String getInputFilesDirectory() {
         return inputFilesDirectory;
     }
-    public String[] getCharsToDelete() {
-        return charsToDelete;
-    }
     public Integer getOutFileSize() {
         return outFileSize;
     }
@@ -77,5 +76,13 @@ public class PropertyLoader {
 
     public boolean getEnableEnglishText() {
         return enableEnglishText;
+    }
+
+    public String getWordsToDeleteDir() {
+        return wordsToDeleteDir;
+    }
+
+    public String getProtectedWordsDir() {
+        return protectedWordsDir;
     }
 }

@@ -41,7 +41,7 @@ public class ExcelParser {
         while(rowBIterator.hasNext()){
             HSSFRow currentRow = (HSSFRow) rowBIterator.next();
             HSSFCell cellB = currentRow.getCell(1);
-            if (cellB.getCellType() == Cell.CELL_TYPE_STRING){
+            if (cellB != null && cellB.getCellType() == Cell.CELL_TYPE_STRING){
 
                 Pattern phoneNumberPattern = Pattern.compile("-->");
                 Matcher matcher = phoneNumberPattern.matcher(cellB.getStringCellValue());

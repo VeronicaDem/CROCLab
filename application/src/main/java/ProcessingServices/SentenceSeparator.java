@@ -4,6 +4,7 @@ import InputFile.InputFile;
 import ReportLog.ReportLog;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,8 +29,14 @@ public class SentenceSeparator {
             String foundSentence = fileText.substring(matcher.start(), matcher.end());
             fileSentences.add(foundSentence);
         }
+        removeUselessSentences(fileSentences);
         inputFile.setSentences(fileSentences);
     }
 
+
+    private static ArrayList<String> removeUselessSentences(ArrayList<String>sentences){
+        sentences.removeIf(token -> Pattern.matches("(^\\s*[А-Яа-яёЁA-Za-z][\\W&&[^А-Яа-яёЁ]]+\\s*$)|(^\\s*[\\W&&[^А-Яа-яёЁ]]+\\s*$)", token));
+        return sentences;
+    }
 
 }
