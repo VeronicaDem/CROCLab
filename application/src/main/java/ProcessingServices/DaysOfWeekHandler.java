@@ -1,7 +1,8 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
-import ReportLog.ReportLog;
+import ReportLog.*;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -25,7 +26,9 @@ public class DaysOfWeekHandler {
 
     public static void handleDaysOfWeek(ArrayList<InputFile> inputFiles){
         for (InputFile inputFile : inputFiles){
+            Handler.reportLog.startCurrentOperation(LogOperation.PROCESSING_DAYS_OF_WEEK, inputFile.getFileName());
             processInputFile(inputFile);
+            Handler.reportLog.endOperation();
         }
     }
 

@@ -1,6 +1,8 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
+import ReportLog.LogOperation;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -11,7 +13,9 @@ public class CamelCaseRemover {
 
     public static void removeCamelCase(ArrayList<InputFile> inputFiles){
         for (InputFile inputFile : inputFiles){
+            Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_CAMEL_CASE, inputFile.getFileName());
          processedCurrentFile(inputFile);
+         Handler.reportLog.endOperation();
         }
     }
 

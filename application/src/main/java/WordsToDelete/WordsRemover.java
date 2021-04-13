@@ -18,16 +18,16 @@ public class WordsRemover {
         WordsToDeleteStorage wordsToDeleteStorage = new WordsToDeleteStorage(property);
         wordsToDelete = wordsToDeleteStorage.getWordsToDelete();
         Handler.reportLog.endOperation();
+        Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_WORDS_TO_DELETE);
         processFiles(inputFiles);
+        Handler.reportLog.endOperation();
     }
 
     private static void processFiles(ArrayList<InputFile> inputFiles){
         for (String wordToDelete : wordsToDelete){
             Pattern deleteWordPattern = Pattern.compile("(?<=[\\W&&[^А-Яа-яёЁ]])" + wordToDelete + "(?=[\\W&&[^А-Яа-яёЁ]])");
             for (InputFile inputFile : inputFiles){
-                Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_WORDS_TO_DELETE, inputFile.getFileName());
                 handleFile(inputFile, deleteWordPattern);
-                Handler.reportLog.endOperation();
             }
         }
     }

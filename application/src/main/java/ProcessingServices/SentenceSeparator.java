@@ -1,6 +1,8 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
+import ReportLog.LogOperation;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -12,7 +14,9 @@ public class SentenceSeparator {
     //Принимает текст файла. Возвращает текст разбитый на список предложений.
     public static void splitOnSentences(ArrayList<InputFile>inputFiles){
         for (InputFile inputFile : inputFiles){
+            Handler.reportLog.startCurrentOperation(LogOperation.SEPARATE_ON_SENTENCES, inputFile.getFileName());
             processFile(inputFile);
+            Handler.reportLog.endOperation();
         }
     }
 

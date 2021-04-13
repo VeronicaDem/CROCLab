@@ -31,14 +31,14 @@ public class Handler {
     private ProtectedWordsStorage protectedWordsStorage;
     public static ReportLog reportLog;
 
-    public Handler(String propertyFile){
+    public Handler(String propertyFile) {
         property = new PropertyLoader(propertyFile);
         protectedWordsStorage = new ProtectedWordsStorage(property);
         handle();
     }
 
 
-    private void handle(){
+    private void handle() {
 
         inputFiles = InputFilesLoader.loadInputFiles(property.getInputFilesDirectory());
         reportLog = new ReportLog(inputFiles.size());
@@ -46,9 +46,9 @@ public class Handler {
         dictionaries = new Dictionaries(property.getDictionariesDirectory());
         //Удаление слов, которые пользователь добавил в файл
         WordsRemover.removeWords(property, inputFiles);
-        //Обработка слов которые содержат пробелы(# в. ч. -> войсковая часть)
+        //Замена слов которые содержат пробелы(# в. ч. -> войсковая часть)
         ReplacerSpaceWords.handleWhitespaceWords(dictionaries.getDictionaryWhitespaceWords(), inputFiles);
-        //Обработка слов которые не содержат пробелы(# гор. -> город)
+        //Замена слов которые не содержат пробелы(# гор. -> город)
         ReplacerSingleWords.handleSingleWords(dictionaries.getDictionarySingleWords(), inputFiles);
         //Обработка дней недели
         DaysOfWeekHandler.handleDaysOfWeek(inputFiles);
@@ -82,24 +82,23 @@ public class Handler {
 
 
     //Создаёт выходной файл.
-    public void createOutputFiles(){
+    public void createOutputFiles() {
         String processedFilesDir = property.getOutDirectory() + "/ProcessedFiles";
-        try{
+        try {
             Files.createDirectories(Paths.get(processedFilesDir));
-        }catch(IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         QuarantineCreator.createQuarantine(property.getOutDirectory(), inputFiles);
         CreatorReplacementFile.createReplacementFile(property.getOutDirectory(), inputFiles);
         new Statistic(property, inputFiles).createStatisticFiles();
-        for (InputFile inputFile : inputFiles){
+        for (InputFile inputFile : inputFiles) {
             inputFile.createOutputFile(processedFilesDir, property);
         }
     }
 
 
-
-    public static PropertyLoader getProperty(){
+    public static PropertyLoader getProperty() {
         return property;
     }
 

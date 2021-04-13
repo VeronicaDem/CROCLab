@@ -27,7 +27,7 @@ public class ReplacerSpaceWords {
         Map<String, UnreadableWordHandler> wordsReplacements = whiteSpaceWordsDictionary.getWordReplacement();
         for (Map.Entry<String, UnreadableWordHandler> wordReplacement : wordsReplacements.entrySet()){
             String fileText = inputFile.getFileText();
-            StringBuffer cleanText = new StringBuffer();
+            StringBuilder cleanText = new StringBuilder();
             UnreadableWordHandler unreadableWordHandler = wordReplacement.getValue();
             Pattern unreadableWordPattern = unreadableWordHandler.getUnreadableWordPattern();
             String wordFromDictionary = wordReplacement.getKey();

@@ -10,6 +10,18 @@ public enum LogOperation {
     CREATE_QUARANTINE_FILES("Создание карантинных файлов"),
     LOAD_WORDS_TO_DELETE("Загрузка файла со словами для удаления"),
     REMOVE_WORDS_TO_DELETE("Удаление заданных слов"),
+    PROCESSING_DAYS_OF_WEEK("Обработка дней недели"),
+    REMOVE_INITIALS("Удаление инициалов"),
+    FIND_ABBREVIATIONS("Поиск сокращений в тексте"),
+    PROCESS_NUMBERS("Раскрытие цифр в текст"),
+    PROCESS_LINKS("Удаление ссылок из текста"),
+    PROCESS_PHONE_NUMBERS("Раскрытие номеров телефонов"),
+    PROCESS_PUNCTUATIONS("Обработка знаков препинания"),
+    SEPARATE_ON_SENTENCES("Разделение файла на предложения"),
+    REMOVE_EXTRAS_WHITESPACE("Удаление лишних пробелов"),
+    REMOVE_ACRONYMS("Помещение акронимов в карантин"),
+    REMOVE_CAMEL_CASE("Удаление CamelCase"),
+    CREATE_REPLACEMENT_FILE("Создание файла с заменами"),
     CREATE_PROCESSED_FILES("Создание обработанных файлов");
 
     private String operationName;

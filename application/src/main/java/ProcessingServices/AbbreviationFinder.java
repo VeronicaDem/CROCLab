@@ -1,7 +1,8 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
-import ReportLog.ReportLog;
+import ReportLog.*;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -11,7 +12,9 @@ public class AbbreviationFinder {
 
     public static void processAbbreviations(ArrayList<InputFile> inputFiles) {
         for (InputFile inputFile : inputFiles) {
+            Handler.reportLog.startCurrentOperation(LogOperation.FIND_ABBREVIATIONS, inputFile.getFileName());
             findAbbreviationsInInputFile(inputFile);
+            Handler.reportLog.endOperation();
         }
     }
 

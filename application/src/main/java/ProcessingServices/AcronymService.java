@@ -1,7 +1,9 @@
 package ProcessingServices;
 
 import FileWordsToExclude.ProtectedWordsStorage;
+import Handler.Handler;
 import InputFile.InputFile;
+import ReportLog.LogOperation;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -11,7 +13,9 @@ public class AcronymService {
 
     public static void acronymsInQuarantine(ArrayList<InputFile> inputFiles){
         for (InputFile inputFile : inputFiles){
+            Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_ACRONYMS, inputFile.getFileName());
             handleAcronyms(inputFile);
+            Handler.reportLog.endOperation();
         }
     }
 

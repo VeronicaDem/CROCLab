@@ -1,6 +1,9 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
+import ReportLog.LogOperation;
+
 import java.util.ArrayList;
 
 
@@ -12,7 +15,9 @@ public class LinkService {
 
     public static void handle(ArrayList<InputFile> inputFiles){
         for (InputFile inputFile : inputFiles){
+            Handler.reportLog.startCurrentOperation(LogOperation.PROCESS_LINKS, inputFile.getFileName());
             removeLinks(inputFile);
+            Handler.reportLog.endOperation();
         }
     }
 

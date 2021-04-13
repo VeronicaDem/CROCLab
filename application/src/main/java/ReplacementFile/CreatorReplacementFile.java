@@ -1,6 +1,8 @@
 package ReplacementFile;
 
+import Handler.Handler;
 import InputFile.InputFile;
+import ReportLog.LogOperation;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,8 +21,10 @@ public class CreatorReplacementFile {
             ex.printStackTrace();
         }
         for (InputFile inputFile : inputFiles) {
+            Handler.reportLog.startCurrentOperation(LogOperation.CREATE_REPLACEMENT_FILE, inputFile.getFileName());
             ReplacementFile replacementFile = inputFile.getReplacementFile();
             replacementFile.createFile(currentDir);
+            Handler.reportLog.endOperation();
         }
     }
 }

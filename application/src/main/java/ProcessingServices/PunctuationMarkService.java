@@ -1,7 +1,8 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
-import ReportLog.ReportLog;
+import ReportLog.*;
 
 import java.util.ArrayList;
 
@@ -9,7 +10,9 @@ public class PunctuationMarkService {
 
     public static void handle(ArrayList<InputFile>inputFiles){
         for (InputFile inputFile : inputFiles){
+            Handler.reportLog.startCurrentOperation(LogOperation.PROCESS_PUNCTUATIONS, inputFile.getFileName());
             handlePunctuationMarks(inputFile);
+            Handler.reportLog.endOperation();
         }
     }
 

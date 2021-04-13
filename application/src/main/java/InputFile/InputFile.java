@@ -58,7 +58,7 @@ public class InputFile {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8"))) {
             String readData = "";
             while ((readData = br.readLine()) != null) {
-                fileData.append(readData.trim()).append(". ");
+                fileData.append(readData.trim()).append(" . ");
             }
         } catch (IOException e) {
             e.printStackTrace();

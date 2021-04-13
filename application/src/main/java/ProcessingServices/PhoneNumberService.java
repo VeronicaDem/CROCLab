@@ -1,7 +1,9 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
 import NumberService.*;
+import ReportLog.LogOperation;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -13,7 +15,9 @@ public class PhoneNumberService {
 
     public static void handle(ArrayList<InputFile>inputFiles){
         for (InputFile inputFile : inputFiles){
+            Handler.reportLog.startCurrentOperation(LogOperation.PROCESS_PHONE_NUMBERS, inputFile.getFileName());
             handlePhoneNumbers(inputFile);
+            Handler.reportLog.endOperation();
         }
     }
 

@@ -21,15 +21,27 @@ public class ReportLog {
         switch (currentOperation) {
             case DICTIONARIES_LOAD:
             case LOAD_WORDS_TO_DELETE:
+            case REMOVE_WORDS_TO_DELETE:
                 loadingResources(currentOperation);
                 break;
-            case REMOVE_WORDS_TO_DELETE:
             case SINGLE_DICTIONARY:
             case WHITESPACE_DICTIONARY:
             case FIND_ENGLISH:
             case REMOVE_ENGLISH:
             case CREATE_QUARANTINE_FILES:
             case CREATE_PROCESSED_FILES:
+            case PROCESSING_DAYS_OF_WEEK:
+            case REMOVE_INITIALS:
+            case FIND_ABBREVIATIONS:
+            case PROCESS_NUMBERS:
+            case PROCESS_LINKS:
+            case PROCESS_PHONE_NUMBERS:
+            case PROCESS_PUNCTUATIONS:
+            case SEPARATE_ON_SENTENCES:
+            case REMOVE_EXTRAS_WHITESPACE:
+            case REMOVE_ACRONYMS:
+            case REMOVE_CAMEL_CASE:
+            case CREATE_REPLACEMENT_FILE:
                 processingFiles(currentOperation, fileName);
                 break;
         }
@@ -57,6 +69,7 @@ public class ReportLog {
         }
         previousOperation = currentOperation;
     }
+
 
 }
 

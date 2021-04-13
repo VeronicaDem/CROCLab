@@ -1,13 +1,18 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
+import ReportLog.LogOperation;
+
 import java.util.ArrayList;
 
 public class WhitespaceService {
 
     public static void removeExtraWhitespace(ArrayList<InputFile>inputFiles){
-        for (InputFile file : inputFiles){
-            handleFile(file);
+        for (InputFile inputFile : inputFiles){
+            Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_EXTRAS_WHITESPACE, inputFile.getFileName());
+            handleFile(inputFile);
+            Handler.reportLog.endOperation();
         }
     }
 
