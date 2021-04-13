@@ -1,7 +1,9 @@
 package WordsToDelete;
 
+import Handler.Handler;
 import InputFile.InputFile;
 import Properties.PropertyLoader;
+import ReportLog.LogOperation;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -10,21 +12,22 @@ import java.util.regex.Pattern;
 public class WordsRemover {
 
     private static ArrayList<String> wordsToDelete;
-    private static WordsToDeleteStorage wordsToDeleteStorage;
 
-    public static void WordsRemover(PropertyLoader property, ArrayList<InputFile>inputFiles){
-        WordsToDeleteStorage wordToDeleteService = new WordsToDeleteStorage(property);
-        wordsToDelete = wordToDeleteService.getWordsToDelete();
-        wordsToDeleteStorage = new WordsToDeleteStorage(property);
+    public static void removeWords(PropertyLoader property, ArrayList<InputFile>inputFiles){
+        Handler.reportLog.startCurrentOperation(LogOperation.LOAD_WORDS_TO_DELETE);
+        WordsToDeleteStorage wordsToDeleteStorage = new WordsToDeleteStorage(property);
         wordsToDelete = wordsToDeleteStorage.getWordsToDelete();
-        removeWords(inputFiles);
+        Handler.reportLog.endOperation();
+        processFiles(inputFiles);
     }
 
-    private static void removeWords(ArrayList<InputFile> inputFiles){
+    private static void processFiles(ArrayList<InputFile> inputFiles){
         for (String wordToDelete : wordsToDelete){
             Pattern deleteWordPattern = Pattern.compile("(?<=[\\W&&[^А-Яа-яёЁ]])" + wordToDelete + "(?=[\\W&&[^А-Яа-яёЁ]])");
             for (InputFile inputFile : inputFiles){
+                Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_WORDS_TO_DELETE, inputFile.getFileName());
                 handleFile(inputFile, deleteWordPattern);
+                Handler.reportLog.endOperation();
             }
         }
     }

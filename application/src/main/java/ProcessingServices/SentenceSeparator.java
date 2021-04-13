@@ -1,10 +1,8 @@
 package ProcessingServices;
 
 import InputFile.InputFile;
-import ReportLog.ReportLog;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,7 +11,6 @@ public class SentenceSeparator {
 
     //Принимает текст файла. Возвращает текст разбитый на список предложений.
     public static void splitOnSentences(ArrayList<InputFile>inputFiles){
-        ReportLog.logCurrentOperation("Разделение текста на предложения.");
         for (InputFile inputFile : inputFiles){
             processFile(inputFile);
         }
@@ -34,9 +31,8 @@ public class SentenceSeparator {
     }
 
 
-    private static ArrayList<String> removeUselessSentences(ArrayList<String>sentences){
+    private static void removeUselessSentences(ArrayList<String>sentences){
         sentences.removeIf(token -> Pattern.matches("(^\\s*[А-Яа-яёЁA-Za-z][\\W&&[^А-Яа-яёЁ]]+\\s*$)|(^\\s*[\\W&&[^А-Яа-яёЁ]]+\\s*$)", token));
-        return sentences;
     }
 
 }

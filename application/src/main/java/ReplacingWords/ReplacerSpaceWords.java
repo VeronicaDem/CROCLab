@@ -2,8 +2,9 @@ package ReplacingWords;
 
 import Dictionary.*;
 import Dictionary.DictionaryWhitespaceWords;
+import Handler.Handler;
 import InputFile.InputFile;
-import ReportLog.ReportLog;
+import ReportLog.*;
 
 
 import java.util.ArrayList;
@@ -13,12 +14,11 @@ import java.util.regex.Pattern;
 
 public class ReplacerSpaceWords {
 
-    public static void handleWhitespaceWords(ArrayList<DictionaryWhitespaceWords>dictionaries, ArrayList<InputFile>inputFiles){
-        ReportLog.logCurrentOperation("Первичная обработка слов из словаря.");
-        for (DictionaryWhitespaceWords dictionary : dictionaries){
-            for (InputFile inputfile : inputFiles){
-                processInputFile(dictionary, inputfile);
-            }
+    public static void handleWhitespaceWords(DictionaryWhitespaceWords dictionaryWhitespaceWords, ArrayList<InputFile> inputFiles) {
+        for (InputFile inputfile : inputFiles) {
+            Handler.reportLog.startCurrentOperation(LogOperation.WHITESPACE_DICTIONARY, inputfile.getFileName());
+            processInputFile(dictionaryWhitespaceWords, inputfile);
+            Handler.reportLog.endOperation();
         }
     }
 

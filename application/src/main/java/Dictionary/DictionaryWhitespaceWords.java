@@ -14,33 +14,19 @@ public class DictionaryWhitespaceWords {
 
     private String fileName;
 
-    public DictionaryWhitespaceWords(String filePath){
-        this.fileName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
-        loadDictionary(filePath);
+    public DictionaryWhitespaceWords(ArrayList<WordReplacements>wordReplacements){
+        convertWordReplacements(wordReplacements);
+    }
+
+    private void convertWordReplacements(ArrayList<WordReplacements>wordReplacements){
+        for (WordReplacements wordFromDictionary : wordReplacements){
+            String unreadableWord = wordFromDictionary.getWord();
+            String[]replacements = wordFromDictionary.getReplacements();
+            wordReplacement.put(unreadableWord, new UnreadableWordHandler(unreadableWord, replacements));
+        }
     }
 
 
-
-    public void loadDictionary(String filePath) {
-        String readLine;
-        StringBuilder dictionaryData = new StringBuilder();
-        try(BufferedReader br = new BufferedReader(new FileReader(filePath))){
-            while((readLine = br.readLine()) != null){
-                dictionaryData.append(readLine);
-            }
-        }catch(IOException ex){
-            ex.printStackTrace();
-        }
-        Gson gson = new Gson();
-        JsonDictionary dictionary = gson.fromJson(dictionaryData.toString(), JsonDictionary.class);
-        ArrayList<WordReplacements>dictionaryWords = dictionary.getDictionaryWords();
-        for (WordReplacements word : dictionaryWords){
-            String unreadableWord = word.getWord();
-            String[] replacements = word.getReplacements();
-            this.wordReplacement.put(unreadableWord, new UnreadableWordHandler(unreadableWord, replacements));
-        }
-
-    }
 
     public String getReplacements(String unreadableWord){
         UnreadableWordHandler unreadableWordHandler = wordReplacement.get(unreadableWord);

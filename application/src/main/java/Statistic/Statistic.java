@@ -3,6 +3,7 @@ package Statistic;
 import Handler.Handler;
 import InputFile.InputFile;
 import InformationFiles.FileWithAbbreviations;
+import Properties.PropertyLoader;
 import Statistic.GeneralStatistic.GeneralProcessedFilesStatistic;
 
 import java.io.FileOutputStream;
@@ -24,7 +25,8 @@ public class Statistic {
 
 
 
-    public Statistic(String outputDirectory, ArrayList<InputFile>rowFiles){
+    public Statistic(PropertyLoader property, ArrayList<InputFile>rowFiles){
+        String outputDirectory = property.getOutDirectory();
         this.inputFiles = rowFiles;
         for (InputFile inputFile : rowFiles){
             this.rowFilesStatistic.add(new RowFileStatistic(inputFile));
@@ -43,6 +45,7 @@ public class Statistic {
         String userStatisticDir = statisticFilesDir + "/UserStatistic";
         String filesWithAbbreviationsDir = statisticFilesDir + "/FilesWithAbbreviations";
         String filesWithEnglishTextDir = statisticFilesDir + "/FilesWithEnglish";
+        String deletedWordsStatisticDir = statisticFilesDir + "/DeletedWords";
         try {
             Files.createDirectories(Paths.get(statisticFilesDir));
             Files.createDirectories(Paths.get(generalFilesStatisticDir));
@@ -52,6 +55,7 @@ public class Statistic {
             Files.createDirectories(Paths.get(userStatisticDir));
             Files.createDirectories(Paths.get(filesWithAbbreviationsDir));
             Files.createDirectories(Paths.get(filesWithEnglishTextDir));
+            Files.createDirectories(Paths.get(deletedWordsStatisticDir));
         }catch(IOException ex){
             ex.printStackTrace();
         }
@@ -65,6 +69,7 @@ public class Statistic {
         generateUserStatistic(userStatisticDir);
         generateFilesWithAbbreviations(filesWithAbbreviationsDir);
         generateFilesWithEnglish(filesWithEnglishTextDir);
+        generateDeletedWordsStatistic(deletedWordsStatisticDir);
     }
 
 
@@ -86,9 +91,6 @@ public class Statistic {
 
 
     private void generateQuarantineStatistic(String dir){
-//        for (QuarantineStatisticFile quarantineStatisticFile : quarantineStatisticFiles){
-//            quarantineStatisticFile.createFile(dir);
-//        }
         GeneralQuarantineSentencesStatistic generalQuarantineSentencesStatistic =
                 new GeneralQuarantineSentencesStatistic(quarantineStatisticFiles);
         generalQuarantineSentencesStatistic.createFile(dir);
@@ -112,6 +114,10 @@ public class Statistic {
         for (InputFile inputFile : inputFiles){
             inputFile.getFileWithEnglishText().createFile(outDir);
         }
+    }
+
+    private void generateDeletedWordsStatistic(String outputDirectory){
+        new DeletedWordsStatistic(inputFiles).createStatistic(outputDirectory);
     }
 
 

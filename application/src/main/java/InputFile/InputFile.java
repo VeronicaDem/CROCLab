@@ -1,9 +1,12 @@
 package InputFile;
 
+import Handler.Handler;
 import InformationFiles.FileWithAbbreviations;
 import InformationFiles.FileWithEnglishText;
+import Properties.PropertyLoader;
 import Quarantine.QuarantineSentencesFile;
 import ReplacementFile.ReplacementFile;
+import ReportLog.LogOperation;
 import WordsToDelete.DeletedWordsStorage;
 import org.apache.any23.encoding.TikaEncodingDetector;
 
@@ -29,7 +32,7 @@ public class InputFile {
     public InputFile(String filePath) {
         this.filePath = filePath;
         this.fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
-        validEncoding = checkEncoding();
+//        validEncoding = checkEncoding();
 //        if (!validEncoding) {
 //            this.filePath = EncodingService.changeEncoding(filePath);
 //        }
@@ -63,10 +66,12 @@ public class InputFile {
         fileText = fileData.toString();
     }
 
-    public void createOutputFile(String outputDirectory, int outputFileSize){
+    public void createOutputFile(String outputDirectory, PropertyLoader property){
+        Handler.reportLog.startCurrentOperation(LogOperation.CREATE_PROCESSED_FILES, fileName);
         int countByte = 0;
         int countSentence = 0;
         int countFiles = 1;
+        int outputFileSize = property.getOutFileSize();
         OutputStreamWriter os = null;
         try{
             os = new OutputStreamWriter(new FileOutputStream(outputDirectory + "/Processed_" +
@@ -106,6 +111,7 @@ public class InputFile {
         }catch(IOException ex){
             ex.printStackTrace();
         }
+        Handler.reportLog.endOperation();
     }
 
 
@@ -115,6 +121,7 @@ public class InputFile {
         try (InputStream is = new FileInputStream(filePath);) {
             fileEncoding = Charset.forName(new TikaEncodingDetector().guessEncoding(is)).toString();
         } catch (IOException e) {
+
             e.printStackTrace();
         }
         return fileEncoding.equals("UTF-8");

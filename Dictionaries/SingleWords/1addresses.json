@@ -1,0 +1,188 @@
+{
+	"dictionaryWords": [
+		{
+			"word": "гор.",
+			"replacements": [
+				"город"
+			]
+		},
+		{
+			"word": "г.",
+			"replacements": [
+				"город"
+			]
+		},
+		{
+			"word": "губ.",
+			"replacements": [
+				"губерния",
+				"губернский"
+			]
+		},
+		{
+			"word": "дер.",
+			"replacements": [
+				"деревня"
+			]
+		},
+		{
+			"word": "д.",
+			"replacements": [
+				"дом"
+			]
+		},
+		{
+			"word": "Д/к",
+			"replacements": [
+				"Дворец культуры",
+				"Дом культуры"
+			]
+		},
+		{
+			"word": "зал.",
+			"replacements": [
+				"залив"
+			]
+		},
+		{
+			"word": "зат.",
+			"replacements": [
+				"затон"
+			]
+		},
+		{
+			"word": "к.",
+			"replacements": [
+				"корпус"
+			]
+		},
+		{
+			"word": "кв.",
+			"replacements": [
+				"квартира",
+				"квартал"
+			]
+		},
+		{
+			"word": "корп.",
+			"replacements": [
+				"корпус"
+			]
+		},
+		{
+			"word": "ленингр.",
+			"replacements": [
+				"ленинградский"
+			]
+		},
+		{
+			"word": "мкр-н",
+			"replacements": [
+				"микрорайон"
+			]
+		},
+		{
+			"word": "муниц.",
+			"replacements": [
+				"муниципальный"
+			]
+		},
+		{
+			"word": "наб.",
+			"replacements": [
+				"набережная"
+			]
+		},
+		{
+			"word": "оз.",
+			"replacements": [
+				"озеро"
+			]
+		},
+		{
+			"word": "пгт",
+			"replacements": [
+				"поселок городского типа"
+			]
+		},
+		{
+			"word": "петерб.",
+			"replacements": [
+				"петербургский"
+			]
+		},
+		{
+			"word": "петрогр.",
+			"replacements": [
+				"петроградский"
+			]
+		},
+		{
+			"word": "пл.",
+			"replacements": [
+				"площадь"
+			]
+		},
+		{
+			"word": "п-ов",
+			"replacements": [
+				"полуостров"
+			]
+		},
+		{
+			"word": "под.",
+			"replacements": [
+				"подъезд"
+			]
+		},
+		{
+			"word": "пом.",
+			"replacements": [
+				"помещение"
+			]
+		},
+		{
+			"word": "пос.",
+			"replacements": [
+				"поселок"
+			]
+		},
+		{
+			"word": "п.",
+			"replacements": [
+				"поселок",
+				"пункт"
+			]
+		},
+		{
+			"word": "пр.",
+			"replacements": [
+				"проспект"
+			]
+		},
+		{
+			"word": "просп.",
+			"replacements": [
+				"проспект"
+			]
+		},
+		{
+			"word": "пер.",
+			"replacements": [
+				"переулок"
+			]
+		},
+		{
+			"word": "пр-т",
+			"replacements": [
+				"проспект"
+			]
+		},
+		{
+			"word": "с.",
+			"replacements": [
+				"село"
+			]
+		}
+	]
+}

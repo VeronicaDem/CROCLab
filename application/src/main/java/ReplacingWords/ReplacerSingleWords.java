@@ -1,22 +1,21 @@
 package ReplacingWords;
 
 import Dictionary.DictionarySingleWords;
+import Handler.Handler;
 import InputFile.InputFile;
+import ReportLog.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.regex.Pattern;
+
 
 public class ReplacerSingleWords {
 
-    public static void handleSingleWords(ArrayList<DictionarySingleWords> dictionariesSingleWords,
-                                         ArrayList<InputFile> inputFiles){
-        for (DictionarySingleWords dictionarySingleWords : dictionariesSingleWords){
+    public static void handleSingleWords(DictionarySingleWords dictionarySingleWords, ArrayList<InputFile> inputFiles){
             for (InputFile inputFile : inputFiles) {
+                Handler.reportLog.startCurrentOperation(LogOperation.SINGLE_DICTIONARY, inputFile.getFileName());
                 processFile(inputFile, dictionarySingleWords);
+                Handler.reportLog.endOperation();
             }
-        }
     }
 
     private static void processFile(InputFile inputFile, DictionarySingleWords dictionarySingleWords){

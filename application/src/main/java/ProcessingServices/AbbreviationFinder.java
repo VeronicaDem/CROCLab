@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 public class AbbreviationFinder {
 
     public static void processAbbreviations(ArrayList<InputFile> inputFiles) {
-        ReportLog.logCurrentOperation("Поиск сокращений в файлах.");
         for (InputFile inputFile : inputFiles) {
             findAbbreviationsInInputFile(inputFile);
         }

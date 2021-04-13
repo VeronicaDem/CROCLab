@@ -24,7 +24,6 @@ public class DaysOfWeekHandler {
 
 
     public static void handleDaysOfWeek(ArrayList<InputFile> inputFiles){
-        ReportLog.logCurrentOperation("Обработка дней недели.");
         for (InputFile inputFile : inputFiles){
             processInputFile(inputFile);
         }

@@ -1,5 +1,7 @@
 package Quarantine;
 
+import Handler.Handler;
+import ReportLog.LogOperation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

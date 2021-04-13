@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class PunctuationMarkService {
 
     public static void handle(ArrayList<InputFile>inputFiles){
-        ReportLog.logCurrentOperation("Удаление лишних знаков препинания.");
         for (InputFile inputFile : inputFiles){
             handlePunctuationMarks(inputFile);
         }

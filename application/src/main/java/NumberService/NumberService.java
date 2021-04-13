@@ -1,7 +1,6 @@
 package NumberService;
 
 import InputFile.InputFile;
-import ReportLog.ReportLog;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -9,35 +8,45 @@ import java.util.regex.Pattern;
 
 public class NumberService {
 
-    public static void handleNumbers(ArrayList<InputFile>inputFiles){
-        ReportLog.logCurrentOperation("Раскрытие цифр в текстовое представление.");
-        for (InputFile inputFile : inputFiles){
+    public static void handleNumbers(ArrayList<InputFile> inputFiles) {
+        for (InputFile inputFile : inputFiles) {
             handleFile(inputFile);
         }
     }
 
     //Принимает список предложений из файла. Возвращает список предложений с числами, раскрытыми в текст.
-    private static void handleFile(InputFile inputFile){
-        ArrayList<String>fileSentences = inputFile.getSentences();
-        ArrayList<String>cleanSentences = new ArrayList<>();
+    private static void handleFile(InputFile inputFile) {
+        String fileText = inputFile.getFileText();
+        StringBuilder cleanText = new StringBuilder();
         Pattern numbersPattern = Pattern.compile("[\\d]+");
-        for (String sentence : fileSentences){
-            Matcher matcher = numbersPattern.matcher(sentence);
-            StringBuffer result = new StringBuffer();
-            while(matcher.find()){
-                String foundNumber = sentence.substring(matcher.start(), matcher.end()).trim();
-                String replacement = NumberHandler.resolveZeroes(foundNumber);
-                matcher.appendReplacement(result, " " + replacement + " ");
+        Matcher matcher = numbersPattern.matcher(fileText);
+        while (matcher.find()) {
+            String foundNumber = fileText.substring(matcher.start(), matcher.end()).trim();
+            String replacement = "";
+            if (foundNumber.length() > 4) {
+                replacement = processLongNumber(foundNumber);
+            } else {
+                replacement = NumberHandler.numberToString(foundNumber);
             }
-            matcher.appendTail(result);
-            cleanSentences.add(result.toString());
+            matcher.appendReplacement(cleanText, " " + replacement + " ");
         }
-        inputFile.setSentences(cleanSentences);
+        matcher.appendTail(cleanText);
+        inputFile.setFileText(cleanText.toString());
     }
 
-    public static String numberToSymbol(String number){
-        String result;
-        result = NumberHandler.resolveZeroes(number);
-        return result;
+    private static String processLongNumber(String longNumber) {
+        StringBuilder result = new StringBuilder();
+        while (longNumber.length() > 0) {
+            if (longNumber.length() > 3) {
+                result.append(NumberHandler.numberToString(longNumber.substring(0, 3)));
+                longNumber = longNumber.substring(3);
+            } else {
+                result.append(NumberHandler.numberToString(longNumber));
+                break;
+            }
+        }
+        return result.toString();
     }
+
+
 }

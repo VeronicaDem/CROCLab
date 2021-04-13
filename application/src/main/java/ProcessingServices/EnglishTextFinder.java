@@ -1,8 +1,9 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InformationFiles.FileWithEnglishText;
 import InputFile.InputFile;
-import ReportLog.ReportLog;
+import ReportLog.*;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -12,9 +13,10 @@ public class EnglishTextFinder {
 
 
     public static void findEnglishText(ArrayList<InputFile>inputFiles){
-        ReportLog.logCurrentOperation("Поиск английского текста.");
         for (InputFile inputFile : inputFiles){
-        processFile(inputFile);
+            Handler.reportLog.startCurrentOperation(LogOperation.FIND_ENGLISH, inputFile.getFileName());
+            processFile(inputFile);
+            Handler.reportLog.endOperation();
         }
     }
 

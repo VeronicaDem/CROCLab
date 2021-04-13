@@ -1,6 +1,8 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
+import ReportLog.LogOperation;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -10,7 +12,9 @@ public class EnglishTextRemover {
 
     public static void removeEnglishText(ArrayList<InputFile>inputFiles) {
         for (InputFile inputFile : inputFiles) {
+            Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_ENGLISH, inputFile.getFileName());
            handleFile(inputFile);
+           Handler.reportLog.endOperation();
         }
     }
 

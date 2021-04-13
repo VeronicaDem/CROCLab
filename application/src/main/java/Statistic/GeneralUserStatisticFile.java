@@ -23,10 +23,12 @@ public class GeneralUserStatisticFile {
     }
 
     public void createGeneralStatistic(String outDir){
-        try(OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(outDir + "/GeneralUserStatistic_" + userStatisticFileName + ".txt"))){
-            os.write(getJsonFormat());
-        }catch(IOException ex){
-            ex.printStackTrace();
+        if (!isFileEmpty()) {
+            try (OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(outDir + "/GeneralUserStatistic_" + userStatisticFileName + ".txt"))) {
+                os.write(getJsonFormat());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -60,5 +62,9 @@ public class GeneralUserStatisticFile {
     private String getJsonFormat(){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
+    }
+
+    private boolean isFileEmpty(){
+        return generalUserStatistic.size() == 0;
     }
 }

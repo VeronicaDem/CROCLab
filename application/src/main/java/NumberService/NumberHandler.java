@@ -1,7 +1,7 @@
 package NumberService;
 
 public class NumberHandler {
-    public static String resolveZeroes(String number) {
+    public static String numberToString(String number) {
         String res = "";
         boolean flag = false;
         if (number.startsWith("0")) {
