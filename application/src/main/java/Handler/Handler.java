@@ -73,7 +73,7 @@ public class Handler {
         //Отправляем акронимы в карантин
         AcronymService.acronymsInQuarantine(inputFiles);
         //Предложения содержащие CamelCase отправляются в карантин.
-        CamelCaseRemover.removeCamelCase(inputFiles);
+        CamelCaseService.removeCamelCase(inputFiles);
         //Создаём файлы статистики
         statistic = new Statistic(property.getOutDirectory(), inputFiles);
         //Создаём выходной файл.
