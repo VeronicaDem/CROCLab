@@ -38,7 +38,7 @@ public class CamelCaseService {
             while (matcher1.find()) {
                 ch = matcher1.group();
 
-                int i = s.indexOf(ch);
+                int i = s.lastIndexOf(ch);
                 res = s.substring(0 , i);
                 res = res + " " + s.substring(i);
 
