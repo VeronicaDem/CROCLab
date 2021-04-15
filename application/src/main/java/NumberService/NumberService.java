@@ -14,7 +14,6 @@ public class NumberService {
         for (InputFile inputFile : inputFiles) {
             Handler.reportLog.startCurrentOperation(LogOperation.PROCESS_NUMBERS, inputFile.getFileName());
             handleFile(inputFile);
-            Handler.reportLog.endOperation();
         }
     }
 

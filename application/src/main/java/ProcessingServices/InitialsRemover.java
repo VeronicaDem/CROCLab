@@ -12,7 +12,6 @@ public class InitialsRemover {
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_INITIALS, inputFile.getFileName());
             processFile(inputFile);
-            Handler.reportLog.endOperation();
         }
     }
 

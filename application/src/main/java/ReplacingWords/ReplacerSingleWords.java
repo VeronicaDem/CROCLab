@@ -1,6 +1,7 @@
 package ReplacingWords;
 
 import Dictionary.DictionarySingleWords;
+import Dictionary.DictionaryWhitespaceWords;
 import Handler.Handler;
 import InputFile.InputFile;
 import ReportLog.*;
@@ -14,35 +15,73 @@ public class ReplacerSingleWords {
             for (InputFile inputFile : inputFiles) {
                 Handler.reportLog.startCurrentOperation(LogOperation.SINGLE_DICTIONARY, inputFile.getFileName());
                 processFile(inputFile, dictionarySingleWords);
-                Handler.reportLog.endOperation();
             }
     }
 
     private static void processFile(InputFile inputFile, DictionarySingleWords dictionarySingleWords){
-        String[] wordTokens = tokenizeFile(inputFile);
-        for (int i = 0; i < wordTokens.length; i++){//ветка для токенов содержащих точку
-            if (wordTokens[i].contains(".")){
-                wordTokens[i] = getDotTokenReplacement(inputFile, wordTokens[i], dictionarySingleWords);
-            }else {//ветка для токенов не содержащих точку
-                String foundReplacement = dictionarySingleWords.getSingleWordReplacement(wordTokens[i]);
-                if (foundReplacement != null) {
-                    inputFile.getReplacementFile().addReplacement(wordTokens[i], foundReplacement, "dictionarySingleWord");
-                    wordTokens[i] = foundReplacement;
+        String[] wordToken = tokenizeFile(inputFile);
+        for (int i = 0; i < wordToken.length; i++){//ветка для токенов содержащих точку
+            if (wordToken[i].contains("!") || wordToken[i].contains("?") || wordToken[i].contains(",")){
+                wordToken[i] = processTokenWithPunctuation(inputFile, dictionarySingleWords, wordToken[i]);
+            }else {
+                if (wordToken[i].contains(".")) {
+                    wordToken[i] = processDotToken(inputFile, dictionarySingleWords, wordToken[i]);
+                } else {//ветка для токенов не содержащих точку
+                    wordToken[i] = processNoDotToken(inputFile, dictionarySingleWords, wordToken[i]);
                 }
             }
         }
-        String result = String.join(" ", wordTokens);
+        String result = String.join(" ", wordToken);
         inputFile.setFileText(result);
     }
 
-    private static String getDotTokenReplacement(InputFile inputFile, String wordToken, DictionarySingleWords dictionarySingleWords){
-        String dotToken = wordToken.substring(0, wordToken.lastIndexOf(".") + 1);
-        String dotTokenReplacement = dictionarySingleWords.getSingleWordReplacement(dotToken);
-        if (dotTokenReplacement != null){
-            inputFile.getReplacementFile().addReplacement(dotToken, dotTokenReplacement, "dictionarySingleWord");
-            wordToken = wordToken.replace(dotToken, dotTokenReplacement);
+    private static String processTokenWithPunctuation(InputFile inputFile, DictionarySingleWords dictionarySingleWords,
+                                               String tokenWithPunctuation){
+        String lastTokenCharacter = tokenWithPunctuation.substring(tokenWithPunctuation.length()-1 );
+        if (lastTokenCharacter.equals("!") || lastTokenCharacter.equals("?") || lastTokenCharacter.equals(",")){
+            String tokenWithoutPunctuation = tokenWithPunctuation.substring(0, tokenWithPunctuation.length()-1 );
+            String replacement = dictionarySingleWords.getSingleWordReplacement(tokenWithoutPunctuation);
+            if (replacement != null){
+                inputFile.getReplacementFile().addReplacement(tokenWithoutPunctuation, replacement, "singleWordAbbreviation");
+                return replacement + lastTokenCharacter;
+            }else {
+                return tokenWithPunctuation;
+            }
+        }else{
+            return tokenWithPunctuation;
         }
-        return wordToken;
+    }
+
+
+    private static String processDotToken(InputFile inputFile, DictionarySingleWords dictionarySingleWords,
+                                   String dotToken){
+        if (dotToken.lastIndexOf(".") == dotToken.length()-1 ){
+            String dotTokenReplacement = processNoDotToken(inputFile, dictionarySingleWords, dotToken);
+            if (dotTokenReplacement.equals(dotToken)){
+                String tokenWithoutDot = dotToken.substring(0, dotToken.lastIndexOf("."));
+                String tokenWithoutDotReplacement = dictionarySingleWords.getSingleWordReplacement(tokenWithoutDot);
+                if (tokenWithoutDotReplacement != null){
+                    inputFile.getReplacementFile().addReplacement(tokenWithoutDot, tokenWithoutDotReplacement, "singleWordAbbreviation");
+                    return tokenWithoutDotReplacement;
+                }else{
+                    return dotTokenReplacement;
+                }
+            }else{
+                return dotTokenReplacement;
+            }
+        }else{
+            return processNoDotToken(inputFile, dictionarySingleWords,dotToken);
+        }
+    }
+
+    private static String processNoDotToken(InputFile inputFile, DictionarySingleWords dictionarySingleWords,
+                                     String noDotToken){
+        String replacement = dictionarySingleWords.getSingleWordReplacement(noDotToken);
+        if (replacement != null){
+            inputFile.getReplacementFile().addReplacement(noDotToken, replacement, "singleWordAbbreviation");
+            return replacement;
+        }
+        return noDotToken;
     }
 
     private static String[] tokenizeFile(InputFile inputFile){

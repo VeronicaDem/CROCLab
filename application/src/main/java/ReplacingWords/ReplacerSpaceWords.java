@@ -18,7 +18,7 @@ public class ReplacerSpaceWords {
         for (InputFile inputfile : inputFiles) {
             Handler.reportLog.startCurrentOperation(LogOperation.WHITESPACE_DICTIONARY, inputfile.getFileName());
             processInputFile(dictionaryWhitespaceWords, inputfile);
-            Handler.reportLog.endOperation();
+
         }
     }
 

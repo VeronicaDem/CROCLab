@@ -24,7 +24,6 @@ public class CreatorReplacementFile {
             Handler.reportLog.startCurrentOperation(LogOperation.CREATE_REPLACEMENT_FILE, inputFile.getFileName());
             ReplacementFile replacementFile = inputFile.getReplacementFile();
             replacementFile.createFile(currentDir);
-            Handler.reportLog.endOperation();
         }
     }
 }

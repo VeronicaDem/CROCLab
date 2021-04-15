@@ -15,7 +15,6 @@ public class AcronymService {
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_ACRONYMS, inputFile.getFileName());
             handleAcronyms(inputFile);
-            Handler.reportLog.endOperation();
         }
     }
 

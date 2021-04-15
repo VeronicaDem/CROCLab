@@ -17,10 +17,8 @@ public class WordsRemover {
         Handler.reportLog.startCurrentOperation(LogOperation.LOAD_WORDS_TO_DELETE);
         WordsToDeleteStorage wordsToDeleteStorage = new WordsToDeleteStorage(property);
         wordsToDelete = wordsToDeleteStorage.getWordsToDelete();
-        Handler.reportLog.endOperation();
         Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_WORDS_TO_DELETE);
         processFiles(inputFiles);
-        Handler.reportLog.endOperation();
     }
 
     private static void processFiles(ArrayList<InputFile> inputFiles){

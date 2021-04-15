@@ -1,14 +1,17 @@
 package Dictionary;
 
+
 import com.google.gson.Gson;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class DictionarySingleWords {
 
-    private HashMap<String, String[]>unreadableWordReplacements = new HashMap<>();
+    private Map<String, String[]> unreadableWordReplacements = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public DictionarySingleWords(ArrayList<WordReplacements>wordReplacements){
         convertUnreadableWords(wordReplacements);
@@ -28,4 +31,6 @@ public class DictionarySingleWords {
             return null;
         }
     }
+
+
 }

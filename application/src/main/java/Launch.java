@@ -16,7 +16,6 @@ public class Launch {
         Long endTime = System.currentTimeMillis();
         System.out.println("Время на обработку файла = " + (endTime - startTime));
 
-
     }
 
 }

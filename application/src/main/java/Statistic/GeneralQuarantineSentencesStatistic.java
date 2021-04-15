@@ -21,8 +21,8 @@ public class GeneralQuarantineSentencesStatistic {
     private void generateStatistic(ArrayList<QuarantineStatisticFile> quarantineStatisticFiles){
         for (QuarantineStatisticFile quarantineSentencesFile : quarantineStatisticFiles){
             handleFile(quarantineSentencesFile);
-            sortStatistic();
         }
+        sortStatistic();
     }
 
     private void handleFile(QuarantineStatisticFile quarantineStatisticFile){

@@ -14,13 +14,13 @@ public class DaysOfWeekHandler {
 
     private static Map<String, String> daysOfWeek = new LinkedHashMap<>();
     static{
-        daysOfWeek.put("пн", "понедельник");
-        daysOfWeek.put("вт", "вторник");
-        daysOfWeek.put("ср", "среда");
-        daysOfWeek.put("чт", "четверг");
-        daysOfWeek.put("пт", "пятница");
-        daysOfWeek.put("сб", "суббота");
-        daysOfWeek.put("вс", "воскресенье");
+        daysOfWeek.put("пн", " понедельник ");
+        daysOfWeek.put("вт", " вторник ");
+        daysOfWeek.put("ср", " среда ");
+        daysOfWeek.put("чт", " четверг ");
+        daysOfWeek.put("пт", " пятница ");
+        daysOfWeek.put("сб", " суббота ");
+        daysOfWeek.put("вс", " воскресенье ");
     }
 
 
@@ -28,7 +28,6 @@ public class DaysOfWeekHandler {
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.PROCESSING_DAYS_OF_WEEK, inputFile.getFileName());
             processInputFile(inputFile);
-            Handler.reportLog.endOperation();
         }
     }
 

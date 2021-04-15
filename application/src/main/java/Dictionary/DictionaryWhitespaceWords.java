@@ -10,7 +10,7 @@ import java.util.*;
 
 public class DictionaryWhitespaceWords {
 
-    private LinkedHashMap<String, UnreadableWordHandler> wordReplacement = new LinkedHashMap<>();
+    private Map<String, UnreadableWordHandler> wordReplacement = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     private String fileName;
 
@@ -36,7 +36,7 @@ public class DictionaryWhitespaceWords {
         return null;
     }
 
-    public LinkedHashMap<String, UnreadableWordHandler> getWordReplacement() {
+    public Map<String, UnreadableWordHandler> getWordReplacement() {
         return wordReplacement;
     }
 

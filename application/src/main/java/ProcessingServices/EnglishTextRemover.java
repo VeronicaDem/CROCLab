@@ -14,7 +14,6 @@ public class EnglishTextRemover {
         for (InputFile inputFile : inputFiles) {
             Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_ENGLISH, inputFile.getFileName());
            handleFile(inputFile);
-           Handler.reportLog.endOperation();
         }
     }
 

@@ -14,7 +14,6 @@ public class AbbreviationFinder {
         for (InputFile inputFile : inputFiles) {
             Handler.reportLog.startCurrentOperation(LogOperation.FIND_ABBREVIATIONS, inputFile.getFileName());
             findAbbreviationsInInputFile(inputFile);
-            Handler.reportLog.endOperation();
         }
     }
 

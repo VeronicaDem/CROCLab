@@ -111,7 +111,6 @@ public class InputFile {
         }catch(IOException ex){
             ex.printStackTrace();
         }
-        Handler.reportLog.endOperation();
     }
 
 

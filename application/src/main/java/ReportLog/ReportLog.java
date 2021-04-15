@@ -47,11 +47,6 @@ public class ReportLog {
         }
     }
 
-    public void endOperation(){
-        endOperationTime = System.currentTimeMillis();
-        System.out.println("Операция заняла " + ((float)(endOperationTime - startOperationTime)/1000) + " секунд");
-    }
-
     private  void loadingResources(LogOperation currentOperation) {
         System.out.println(currentOperation);
     }

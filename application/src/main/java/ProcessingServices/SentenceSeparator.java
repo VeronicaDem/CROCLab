@@ -16,7 +16,6 @@ public class SentenceSeparator {
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.SEPARATE_ON_SENTENCES, inputFile.getFileName());
             processFile(inputFile);
-            Handler.reportLog.endOperation();
         }
     }
 

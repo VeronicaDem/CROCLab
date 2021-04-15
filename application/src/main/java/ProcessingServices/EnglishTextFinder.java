@@ -16,7 +16,6 @@ public class EnglishTextFinder {
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.FIND_ENGLISH, inputFile.getFileName());
             processFile(inputFile);
-            Handler.reportLog.endOperation();
         }
     }
 

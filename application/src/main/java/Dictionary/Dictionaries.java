@@ -18,7 +18,6 @@ public class Dictionaries {
         Handler.reportLog.startCurrentOperation(LogOperation.DICTIONARIES_LOAD);
         loadDictionaries(dictionariesDirectoryPath);
         separateDictionary();
-        Handler.reportLog.endOperation();
     }
 
     private void loadDictionaries(String dictionariesDirectoryPath){

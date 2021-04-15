@@ -17,7 +17,6 @@ public class LinkService {
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.PROCESS_LINKS, inputFile.getFileName());
             removeLinks(inputFile);
-            Handler.reportLog.endOperation();
         }
     }
 

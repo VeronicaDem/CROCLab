@@ -12,7 +12,6 @@ public class WhitespaceService {
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_EXTRAS_WHITESPACE, inputFile.getFileName());
             handleFile(inputFile);
-            Handler.reportLog.endOperation();
         }
     }
 

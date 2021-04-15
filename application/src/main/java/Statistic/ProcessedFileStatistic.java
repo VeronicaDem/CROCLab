@@ -32,7 +32,7 @@ public class ProcessedFileStatistic {
         for (String sentence : sentences){
             String[]words = sentence.split(" ");
                 countWords += words.length;
-                words[words.length-1] = words[words.length-1].replaceAll("[.!?]", "");
+                words[words.length-1] = words[words.length-1].replaceAll("[.!?,]", "");
                 for (String word : words) {
                 if (wordsStatistic.containsKey(word)){
                     int countWord = wordsStatistic.get(word);
@@ -52,7 +52,8 @@ public class ProcessedFileStatistic {
         ArrayList<String>sentences = inputFile.getSentences();
         countSentences = sentences.size();
         for (String sentence : sentences){
-            String foundSentence = sentence.replaceAll("[.!?]", "");
+//            String foundSentence = sentence.replaceAll("[.!?]", "");
+            String foundSentence = sentence;
             if (sentencesStatistic.containsKey(foundSentence)){
                 int countSentence = sentencesStatistic.get(foundSentence);
                 sentencesStatistic.replace(foundSentence, ++countSentence);

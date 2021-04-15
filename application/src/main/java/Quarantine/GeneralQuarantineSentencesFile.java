@@ -42,6 +42,10 @@ public class GeneralQuarantineSentencesFile {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
+
+    private boolean isFileEmpty(){
+        return generalQuarantineSentences.size() == 0;
+    }
 }
 
 class QuarantineSentence{

@@ -27,7 +27,6 @@ public class Handler {
     private ArrayList<InputFile> inputFiles;
     private static Dictionaries dictionaries;
     private static PropertyLoader property;
-    private Statistic statistic;
     private ProtectedWordsStorage protectedWordsStorage;
     public static ReportLog reportLog;
 
@@ -44,6 +43,12 @@ public class Handler {
         reportLog = new ReportLog(inputFiles.size());
         System.out.println(Calendar.getInstance().getTime().toString());
         dictionaries = new Dictionaries(property.getDictionariesDirectory());
+        //Обработка мобильных номеров телефонов
+        PhoneNumberService.handle(inputFiles);
+        //Удаляем ссылки из предложений
+        LinkService.handle(inputFiles);
+        //Обработка знаков препинания и спец. символов.
+        PunctuationMarkService.handle(inputFiles);
         //Удаление слов, которые пользователь добавил в файл
         WordsRemover.removeWords(property, inputFiles);
         //Замена слов которые содержат пробелы(# в. ч. -> войсковая часть)
@@ -58,12 +63,8 @@ public class Handler {
         AbbreviationFinder.processAbbreviations(inputFiles);
         //Раскрываем числа в текст.
         NumberService.handleNumbers(inputFiles);
-        //Удаляем ссылки из предложений
-        LinkService.handle(inputFiles);
-        //Обработка мобильных номеров телефонов
-        PhoneNumberService.handle(inputFiles);
-        //Обработка знаков препинания и спец. символов.
-        PunctuationMarkService.handle(inputFiles);
+        //Предложения содержащие CamelCase отправляются в карантин.
+        CamelCaseRemover.removeCamelCase(inputFiles);
         //Разбиваем файлы на предложения.
         SentenceSeparator.splitOnSentences(inputFiles);
         //Удаляем лишние пробелы из предложения.
@@ -76,8 +77,7 @@ public class Handler {
         }
         //Отправляем акронимы в карантин
         AcronymService.acronymsInQuarantine(inputFiles);
-        //Предложения содержащие CamelCase отправляются в карантин.
-        CamelCaseRemover.removeCamelCase(inputFiles);
+
     }
 
 

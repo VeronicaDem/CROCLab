@@ -17,7 +17,6 @@ public class PhoneNumberService {
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.PROCESS_PHONE_NUMBERS, inputFile.getFileName());
             handlePhoneNumbers(inputFile);
-            Handler.reportLog.endOperation();
         }
     }
 
