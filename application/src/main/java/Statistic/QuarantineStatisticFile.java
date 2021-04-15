@@ -73,7 +73,7 @@ public class QuarantineStatisticFile {
         return quarantineSentencesStatistic;
     }
 
-    private boolean fileIsEmpty(){
+    public boolean fileIsEmpty(){
         return quarantineSentencesStatistic.size() == 0;
     }
 }

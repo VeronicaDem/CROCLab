@@ -20,6 +20,7 @@ public class PunctuationMarkService {
         String handledFileText = fileText.replaceAll("\\.{2,}", "\\.")
                 .replaceAll("#", " номер ").replaceAll("№", " номер ")
                 .replaceAll("%", " процент ").replaceAll("\\+", " плюс ")
+                .replaceAll("₽", " рублей ").replaceAll("\\$", " долларов ")
                 .replaceAll(";", "\\.").replaceAll("<(/?[^<>]*)>", " ")
                 .replaceAll(":", " ").replaceAll("[\\W&&[^а-яА-ЯёЁ,?.!\\s]]", " ");
         inputFile.setFileText(handledFileText);
