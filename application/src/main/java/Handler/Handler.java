@@ -45,6 +45,10 @@ public class Handler {
         dictionaries = new Dictionaries(property.getDictionariesDirectory());
         //Обработка мобильных номеров телефонов
         PhoneNumberService.handle(inputFiles);
+        //Обработка времени
+        TimeService.handle(inputFiles);
+        //Раскрываем числа в текст.
+        NumberService.handleNumbers(inputFiles);
         //Удаляем ссылки из предложений
         LinkService.handle(inputFiles);
         //Обработка знаков препинания и спец. символов.
@@ -61,10 +65,10 @@ public class Handler {
         InitialsRemover.removeInitials(inputFiles);
         //Поиск сокращений( вида - гор./м./г./...)
         AbbreviationFinder.processAbbreviations(inputFiles);
-        //Раскрываем числа в текст.
-        NumberService.handleNumbers(inputFiles);
         //Предложения содержащие CamelCase отправляются в карантин.
         CamelCaseRemover.removeCamelCase(inputFiles);
+        //Обработка месяцев записанных в сокращенном виде(янв, фев, ...)
+        MonthHandler.processMonths(inputFiles);
         //Разбиваем файлы на предложения.
         SentenceSeparator.splitOnSentences(inputFiles);
         //Удаляем лишние пробелы из предложения.
