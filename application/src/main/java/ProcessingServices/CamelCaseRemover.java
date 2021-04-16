@@ -2,8 +2,8 @@ package ProcessingServices;
 
 import InputFile.InputFile;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,8 +16,6 @@ public class CamelCaseRemover {
         }
     }
 
-    //TODO добавить раскрытие камелКейса по типу - ТриГорбаОдинДваТри
-
     private static void processedCurrentFile(InputFile inputFile){
         String fileSentences = inputFile.getFileText();
         Pattern camelCasePattern = Pattern.compile("[А-Яа-я]([А-ЯЁ0-9]*[а-я][а-яё0-9]*[А-ЯЁ]|[а-яё0-9]*[А-ЯЁ][А-ЯЁ0-9]*[а-яё])[А-Яа-яёЁ0-9]*");
@@ -27,30 +25,31 @@ public class CamelCaseRemover {
 
             String s = fileSentences.substring(matcher.start(), matcher.end());
 
-//            System.out.println(s);
+            StringBuilder str = new StringBuilder();
 
-            Pattern pattern = Pattern.compile("[А-ЯA-Z]+");
-            Matcher matcher1 = pattern.matcher(s);
+            Pattern pattern = Pattern.compile("[А-Я]{2,}");
+            Matcher matcher5 = pattern.matcher(s);
+            if (matcher5.find())
+            {
+                s = s.replaceAll("[А-Я]{2,}" , " " + matcher5.group() + " ").toLowerCase(Locale.ROOT);
 
-            String ch = "";
-            String res = "";
-
-            while (matcher1.find()) {
-                ch = matcher1.group();
-
-                int i = s.lastIndexOf(ch);
-                res = s.substring(0 , i);
-                res = res + " " + s.substring(i);
 
             }
 
-            matcher.appendReplacement(processedText, res);
+            String[] result = s.split("(?=\\p{Lu})");
+
+            for (String r: result) {
+                str.append(" ").append(r).append(" ");
+
+            }
+
+            matcher.appendReplacement(processedText, str.toString());
+
 
         }
 
-        matcher.appendTail(processedText);
 
-//        System.out.println(processedText.toString());
+        matcher.appendTail(processedText);
 
         inputFile.setFileText(processedText.toString());
 

@@ -6,6 +6,7 @@ import InputFile.InputFilesLoader;
 import InputFile.InputFile;
 import NumberService.NumberService;
 import ProcessingServices.*;
+import ProcessingServices.DateServices.DateHandler;
 import Properties.PropertyLoader;
 import Quarantine.QuarantineCreator;
 import ReplacementFile.CreatorReplacementFile;
@@ -38,15 +39,19 @@ public class Handler {
 
 
     private void handle() {
-
+        Cleaner.deleteOldOutDirectory(property);
         inputFiles = InputFilesLoader.loadInputFiles(property.getInputFilesDirectory());
         reportLog = new ReportLog(inputFiles.size());
         System.out.println(Calendar.getInstance().getTime().toString());
         dictionaries = new Dictionaries(property.getDictionariesDirectory());
         //Обработка мобильных номеров телефонов
         PhoneNumberService.handle(inputFiles);
+        //Обработка дат
+//        DateHandler.processDate(inputFiles);
         //Обработка времени
         TimeService.handle(inputFiles);
+        //Обработка денежных сумм
+        MoneyService.processMoney(inputFiles);
         //Раскрываем числа в текст.
         NumberService.handleNumbers(inputFiles);
         //Удаляем ссылки из предложений
