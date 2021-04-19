@@ -1,0 +1,54 @@
+{
+  "processedFileName": "InputFile_Mix.txt",
+  "countReplacement": 14,
+  "replacements": [
+    {
+      "unreadableWord": "по",
+      "replacement": "программное обеспечение",
+      "description": "singleWordAbbreviation",
+      "count": 6
+    },
+    {
+      "unreadableWord": "ГВС",
+      "replacement": "горячее водоснабжение",
+      "description": "singleWordAbbreviation",
+      "count": 2
+    },
+    {
+      "unreadableWord": "пер.",
+      "replacement": "переулок",
+      "description": "singleWordAbbreviation",
+      "count": 1
+    },
+    {
+      "unreadableWord": "АО",
+      "replacement": "акционерное общество",
+      "description": "singleWordAbbreviation",
+      "count": 1
+    },
+    {
+      "unreadableWord": "г.",
+      "replacement": "город",
+      "description": "singleWordAbbreviation",
+      "count": 1
+    },
+    {
+      "unreadableWord": "д.",
+      "replacement": "дом",
+      "description": "singleWordAbbreviation",
+      "count": 1
+    },
+    {
+      "unreadableWord": "По",
+      "replacement": "программное обеспечение",
+      "description": "singleWordAbbreviation",
+      "count": 1
+    },
+    {
+      "unreadableWord": "ПО",
+      "replacement": "программное обеспечение",
+      "description": "singleWordAbbreviation",
+      "count": 1
+    }
+  ]
+}

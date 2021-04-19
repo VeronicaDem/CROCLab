@@ -45,11 +45,11 @@ public class Handler {
         System.out.println(Calendar.getInstance().getTime().toString());
         dictionaries = new Dictionaries(property.getDictionariesDirectory());
         //Обработка мобильных номеров телефонов
-        PhoneNumberService.handle(inputFiles);
+       // PhoneNumberService.handle(inputFiles);
         //Обработка дат
-//        DateHandler.processDate(inputFiles);
+        DateHandler.processDate(inputFiles);
         //Обработка времени
-        TimeService.handle(inputFiles);
+       TimeService.handle(inputFiles);
         //Обработка денежных сумм
         MoneyService.processMoney(inputFiles);
         //Раскрываем числа в текст.

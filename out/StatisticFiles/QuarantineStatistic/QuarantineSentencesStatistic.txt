@@ -1,0 +1,13 @@
+{
+  "quarantineStatisticFiles": [
+    {
+      "processedFileName": "QuarantineSentencesInputFile_Mix.txt",
+      "quarantineSentencesStatistic": {
+        "программное обеспечение каким вопросам ветеринарный врач НЕ сможет помочь онлайн?": 1,
+        "программное обеспечение ВСЕМ ВОПРОСАМ ПИШИТЕ.": 1,
+        "СВОЁ.": 1,
+        "О НАС.": 1
+      }
+    }
+  ]
+}

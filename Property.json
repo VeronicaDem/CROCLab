@@ -1,0 +1,17 @@
+{
+"inputFilesDirectory":"C:/Users/Nica/CROCLab/input",
+
+"dictionariesDirectory":"C:/Users/Nica/CROCLab/Dictionaries",
+"filesForStatisticPaths":
+["C:/Users/Nica/CROCLab/foul/foulLanguage.txt"],
+
+"outputDirectory": "C:/Users/Nica/CROCLab/out",
+
+"protectedWordsDir": "C:/Users/Nica/CROCLab/ProtectedWords",
+
+"wordsToDeleteDir" : "C:/Users/Nica/CROCLab/WordsToDelete",
+
+"outputFileSize": "5",
+
+"enableEnglishText": "false"
+}

@@ -1,0 +1,19 @@
+{
+  "processedFileName": "InputFile_Mix.txt",
+  "sentencesWithEnglish": [
+    "Intterra.",
+    "Intterra.",
+    "Intterra.",
+    "Intterra.",
+    "Ветеринар online.",
+    "Зоотехник online.",
+    "svoehelp.",
+    "RSHB Instagram.",
+    "RSHB Twitter.",
+    "RSHB VK.",
+    "RSHB Одноклассники.",
+    "RSHB Facebook.",
+    "email office.",
+    "Если вы не хотите использовать файлы cookie, измените настройки браузера."
+  ]
+}
