@@ -1,18 +1,12 @@
 {
   "processedFileName": "InputFile_Mix.txt",
-  "countReplacement": 15,
+  "countReplacement": 14,
   "replacements": [
     {
       "unreadableWord": "по",
       "replacement": "программное обеспечение",
       "description": "singleWordAbbreviation",
       "count": 6
-    },
-    {
-      "unreadableWord": "г.",
-      "replacement": "город",
-      "description": "singleWordAbbreviation",
-      "count": 2
     },
     {
       "unreadableWord": "ГВС",
@@ -29,6 +23,12 @@
     {
       "unreadableWord": "АО",
       "replacement": "акционерное общество",
+      "description": "singleWordAbbreviation",
+      "count": 1
+    },
+    {
+      "unreadableWord": "г.",
+      "replacement": "город",
       "description": "singleWordAbbreviation",
       "count": 1
     },
