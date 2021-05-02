@@ -13,10 +13,13 @@ public class EnglishTextFinder {
 
 
     public static void findEnglishText(ArrayList<InputFile>inputFiles){
+        Handler.reportLog.startModule();
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.FIND_ENGLISH, inputFile.getFileName());
             processFile(inputFile);
+            Handler.reportLog.endOperation();
         }
+        Handler.reportLog.endModule("Find english words ");
     }
 
     private static void processFile(InputFile inputFile){

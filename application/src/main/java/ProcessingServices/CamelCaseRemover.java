@@ -1,6 +1,8 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
+import ReportLog.LogOperation;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -11,9 +13,13 @@ public class CamelCaseRemover {
 
 
     public static void removeCamelCase(ArrayList<InputFile> inputFiles){
+        Handler.reportLog.startModule();
         for (InputFile inputFile : inputFiles){
+            Handler.reportLog.startCurrentOperation(LogOperation.CAMELCASE_SEPARATOR, inputFile.getFileName());
             processedCurrentFile(inputFile);
+            Handler.reportLog.endOperation();
         }
+        Handler.reportLog.endModule("CamelCases ");
     }
 
     private static void processedCurrentFile(InputFile inputFile){
@@ -45,14 +51,8 @@ public class CamelCaseRemover {
 
             matcher.appendReplacement(processedText, str.toString());
 
-
         }
-
-
         matcher.appendTail(processedText);
-
         inputFile.setFileText(processedText.toString());
-
-
     }
 }

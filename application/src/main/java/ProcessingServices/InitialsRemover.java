@@ -9,10 +9,13 @@ import java.util.ArrayList;
 public class InitialsRemover {
 
     public static void removeInitials(ArrayList<InputFile>inputFiles){
+        Handler.reportLog.startModule();
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_INITIALS, inputFile.getFileName());
             processFile(inputFile);
+            Handler.reportLog.endOperation();
         }
+        Handler.reportLog.endModule("Initials ");
     }
 
     private static void processFile(InputFile inputFile){

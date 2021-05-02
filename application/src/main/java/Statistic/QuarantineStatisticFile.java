@@ -16,6 +16,7 @@ public class QuarantineStatisticFile {
     private transient String fileName;
     private transient QuarantineSentencesFile quarantineSentencesFile;
     private Map<String, Integer>quarantineSentencesStatistic = new LinkedHashMap<>();
+    private Integer countQuarantineSentences = null;
 
     public QuarantineStatisticFile(QuarantineSentencesFile quarantineSentencesFile){
         this.processedFileName = quarantineSentencesFile.getFileName();
@@ -71,6 +72,18 @@ public class QuarantineStatisticFile {
 
     public Map<String, Integer> getQuarantineSentencesStatistic() {
         return quarantineSentencesStatistic;
+    }
+
+    public int getCountQuarantineSentences(){
+        if (this.countQuarantineSentences == null){
+            this.countQuarantineSentences = 0;
+            for (Map.Entry entries : quarantineSentencesStatistic.entrySet()){
+                countQuarantineSentences += (Integer)entries.getValue();
+            }
+        }else{
+            return countQuarantineSentences;
+        }
+        return countQuarantineSentences;
     }
 
     public boolean fileIsEmpty(){

@@ -5,6 +5,7 @@ import InformationFiles.FileWithAbbreviations;
 import InformationFiles.FileWithEnglishText;
 import Properties.PropertyLoader;
 import Quarantine.QuarantineSentencesFile;
+import Quarantine.QuarantineWordsFile;
 import ReplacementFile.ReplacementFile;
 import ReportLog.LogOperation;
 import WordsToDelete.DeletedWordsStorage;
@@ -27,6 +28,7 @@ public class InputFile {
     private FileWithEnglishText fileWithEnglishText;
     private ArrayList<String> sentences = new ArrayList<>();
     private DeletedWordsStorage deletedWordsStorage;
+    private QuarantineWordsFile quarantineWordsFile;
 
 
     public InputFile(String filePath) {
@@ -42,6 +44,7 @@ public class InputFile {
         this.quarantineFile = new QuarantineSentencesFile(fileName);
         this.fileWithEnglishText = new FileWithEnglishText(fileName);
         this.deletedWordsStorage = new DeletedWordsStorage(fileName);
+        this.quarantineWordsFile = new QuarantineWordsFile();
     }
 
     public String getFileText() {
@@ -67,7 +70,6 @@ public class InputFile {
     }
 
     public void createOutputFile(String outputDirectory, PropertyLoader property){
-        Handler.reportLog.startCurrentOperation(LogOperation.CREATE_PROCESSED_FILES, fileName);
         int countByte = 0;
         int countSentence = 0;
         int countFiles = 1;
@@ -134,6 +136,11 @@ public class InputFile {
         quarantineFile.addQuarantineSentence(sentence);
         sentences.remove(sentence);
     }
+
+    public QuarantineWordsFile getQuarantineWordsFile() {
+        return quarantineWordsFile;
+    }
+
 
     public String getFileName() {
         return fileName;

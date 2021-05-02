@@ -1,5 +1,6 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
 
 import java.util.ArrayList;
@@ -43,9 +44,11 @@ public class MonthHandler {
 
 
     public static void processMonths(ArrayList<InputFile>inputFiles){
+        Handler.reportLog.startModule();
         for (InputFile inputFile : inputFiles){
             processFile(inputFile);
         }
+        Handler.reportLog.endModule("Months ");
     }
 
     private static void processFile(InputFile inputFile){

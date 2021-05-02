@@ -25,10 +25,14 @@ public class DaysOfWeekHandler {
 
 
     public static void handleDaysOfWeek(ArrayList<InputFile> inputFiles){
+        Handler.reportLog.startModule();
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.PROCESSING_DAYS_OF_WEEK, inputFile.getFileName());
             processInputFile(inputFile);
+            Handler.reportLog.endOperation();
         }
+        daysOfWeek = null;
+        Handler.reportLog.endModule("Days of week ");
     }
 
     private static void processInputFile(InputFile inputFile){

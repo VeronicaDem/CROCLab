@@ -1,0 +1,21 @@
+Number of input files 1
+Phone numbers 0.02 с.
+Dates 0.11 с.
+Time 0.0 с.
+Money 0.0 с.
+Fractions 0.0 с.
+Links  0.0 с.
+Punctuation marks 0.018 с.
+Remove words 0.02 с.
+Whitespace dictionary words 0.014 с.
+Single dictionary words 0.005 с.
+Days of week 0.01 с.
+Initials 0.01 с.
+Abbreviations 0.004 с.
+CamelCases 0.008 с.
+Months 0.01 с.
+Separation of sentences 0.01 с.
+Extras whitespaces 0.0 с.
+Find english words 0.0 с.
+Acronyms 0.0 с.
+Total modules working time 0.23900000000000005

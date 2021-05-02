@@ -12,10 +12,13 @@ import java.util.ArrayList;
 public class ReplacerSingleWords {
 
     public static void handleSingleWords(DictionarySingleWords dictionarySingleWords, ArrayList<InputFile> inputFiles){
+        Handler.reportLog.startModule();
             for (InputFile inputFile : inputFiles) {
                 Handler.reportLog.startCurrentOperation(LogOperation.SINGLE_DICTIONARY, inputFile.getFileName());
                 processFile(inputFile, dictionarySingleWords);
+                Handler.reportLog.endOperation();
             }
+            Handler.reportLog.endModule("Single dictionary words ");
     }
 
     private static void processFile(InputFile inputFile, DictionarySingleWords dictionarySingleWords){

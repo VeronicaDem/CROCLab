@@ -13,10 +13,13 @@ public class SentenceSeparator {
 
     //Принимает текст файла. Возвращает текст разбитый на список предложений.
     public static void splitOnSentences(ArrayList<InputFile>inputFiles){
+        Handler.reportLog.startModule();
         for (InputFile inputFile : inputFiles){
             Handler.reportLog.startCurrentOperation(LogOperation.SEPARATE_ON_SENTENCES, inputFile.getFileName());
             processFile(inputFile);
+            Handler.reportLog.endOperation();
         }
+        Handler.reportLog.endModule("Separation of sentences ");
     }
 
     private static void processFile(InputFile inputFile){
@@ -31,6 +34,7 @@ public class SentenceSeparator {
         }
         removeUselessSentences(fileSentences);
         inputFile.setSentences(fileSentences);
+        inputFile.setFileText(null);
     }
 
 

@@ -30,27 +30,11 @@ public class QuarantineSentencesFile {
         return quarantineSentences;
     }
 
-
-    //создается выходной файл с карантинными предложениями для определённого входного файла.
-    public void create(String outDir){
-        if (!fileIsEmpty()) {
-            try (OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(outDir + "/" + fileName), "UTF-8")) {
-                os.write(getJsonFormat());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
     public String getFileName() {
         return fileName;
     }
 
-    public String getJsonFormat(){
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String result = gson.toJson(this);
-        return result;
-    }
+
 
     private boolean fileIsEmpty(){
         return quarantineSentences.size() == 0;

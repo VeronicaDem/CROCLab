@@ -1,20 +1,5 @@
-{
-  "generalQuarantineSentences": [
-    {
-      "fileName": "QuarantineSentencesInputFile_Mix.txt",
-      "unreadableSentence": "программное обеспечение каким вопросам ветеринарный врач НЕ сможет помочь онлайн?"
-    },
-    {
-      "fileName": "QuarantineSentencesInputFile_Mix.txt",
-      "unreadableSentence": "программное обеспечение ВСЕМ ВОПРОСАМ ПИШИТЕ."
-    },
-    {
-      "fileName": "QuarantineSentencesInputFile_Mix.txt",
-      "unreadableSentence": "СВОЁ."
-    },
-    {
-      "fileName": "QuarantineSentencesInputFile_Mix.txt",
-      "unreadableSentence": "О НАС."
-    }
-  ]
-}
+В карантин попало 4 предложений
+программное обеспечение каким вопросам ветеринарный врач НЕ сможет помочь онлайн?
+программное обеспечение ВСЕМ ВОПРОСАМ ПИШИТЕ.
+СВОЁ.
+О НАС.

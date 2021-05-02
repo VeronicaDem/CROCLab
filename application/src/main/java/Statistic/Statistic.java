@@ -29,7 +29,6 @@ public class Statistic {
         String outputDirectory = property.getOutDirectory();
         this.inputFiles = rowFiles;
         for (InputFile inputFile : rowFiles){
-            this.rowFilesStatistic.add(new RowFileStatistic(inputFile));
             this.filesWithAbbreviations.add(inputFile.getFileWithAbbreviations());
             this.quarantineStatisticFiles.add(new QuarantineStatisticFile(inputFile.getQuarantineFile()));
             this.processedFilesStatistic.add(new ProcessedFileStatistic(inputFile));
@@ -40,7 +39,6 @@ public class Statistic {
     public void createStatisticFiles(){
         String generalFilesStatisticDir = statisticFilesDir + "/GeneralProcessedFilesStatistic";
         String eachFileStatisticDir = statisticFilesDir + "/EachProcessedFileStatistic";
-        String rowFilesStatisticDir = statisticFilesDir + "/RowFilesStatistic";
         String quarantineStatisticDir = statisticFilesDir + "/QuarantineStatistic";
         String userStatisticDir = statisticFilesDir + "/UserStatistic";
         String filesWithAbbreviationsDir = statisticFilesDir + "/FilesWithAbbreviations";
@@ -51,7 +49,6 @@ public class Statistic {
             Files.createDirectories(Paths.get(generalFilesStatisticDir));
             Files.createDirectories(Paths.get(eachFileStatisticDir));
             Files.createDirectories(Paths.get(quarantineStatisticDir));
-            Files.createDirectories(Paths.get(rowFilesStatisticDir));
             Files.createDirectories(Paths.get(userStatisticDir));
             Files.createDirectories(Paths.get(filesWithAbbreviationsDir));
             Files.createDirectories(Paths.get(filesWithEnglishTextDir));
@@ -61,15 +58,15 @@ public class Statistic {
         }
         generateStatisticEachFile(eachFileStatisticDir);
         //Создание общей статистики по обработанным файлам
-        GeneralProcessedFilesStatistic generalProcessedStatistic = new GeneralProcessedFilesStatistic(processedFilesStatistic);
-        generalProcessedStatistic.createGeneralStatisticFile(generalFilesStatisticDir);
+        GeneralProcessedFilesStatistic generalProcessedFilesStatistic = new GeneralProcessedFilesStatistic(processedFilesStatistic);
+        generalProcessedFilesStatistic.createGeneralStatisticFile(generalFilesStatisticDir);
         //Создание статистики по карантину
         generateQuarantineStatistic(quarantineStatisticDir);
-        generateRowFilesStatistic(rowFilesStatisticDir);
         generateUserStatistic(userStatisticDir);
         generateFilesWithAbbreviations(filesWithAbbreviationsDir);
         generateFilesWithEnglish(filesWithEnglishTextDir);
         generateDeletedWordsStatistic(deletedWordsStatisticDir);
+        generateQuarantineWordsStatistic(quarantineStatisticDir);
     }
 
 
@@ -77,6 +74,10 @@ public class Statistic {
         for(FileWithAbbreviations fileWithAbbreviations : filesWithAbbreviations){
             fileWithAbbreviations.createFile(outDir);
         }
+    }
+
+    private void generateQuarantineWordsStatistic(String outDir){
+        new QuarantineWordsStatistic(inputFiles).createFile(outDir);
     }
 
     private void generateStatisticEachFile(String dir){
@@ -96,9 +97,20 @@ public class Statistic {
         generalQuarantineSentencesStatistic.createFile(dir);
     }
 
-    private void generateRowFilesStatistic(String dir){
+    public static void generateRowFilesStatistic(ArrayList<InputFile>inputFiles, PropertyLoader property){
+        String statisticFilesDir = property.getOutDirectory() + "/StatisticFiles";
+        ArrayList<RowFileStatistic>rowFilesStatistic = new ArrayList<>();
+        for (InputFile inputFile : inputFiles){
+            rowFilesStatistic.add(new RowFileStatistic(inputFile));
+        }
+        String rowFilesStatisticDir = statisticFilesDir + "/RowFilesStatistic";
+        try{
+            Files.createDirectories(Paths.get(rowFilesStatisticDir));
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
         for (RowFileStatistic rowFileStatistic : rowFilesStatistic){
-            rowFileStatistic.create(dir);
+            rowFileStatistic.create(rowFilesStatisticDir);
         }
     }
 
@@ -120,7 +132,18 @@ public class Statistic {
         new DeletedWordsStatistic(inputFiles).createStatistic(outputDirectory);
     }
 
-
+    public void printQuarantineSentencesInfo(){
+        int countQuarantineSentences = 0;
+        int countProcessedSentences = 0;
+        for (QuarantineStatisticFile quarantineStatisticFile : quarantineStatisticFiles){
+            countQuarantineSentences += quarantineStatisticFile.getCountQuarantineSentences();
+        }
+        for (ProcessedFileStatistic processedFileStatistic : processedFilesStatistic){
+            countProcessedSentences += processedFileStatistic.getCountSentences();
+        }
+        System.out.println("В карантин попало " + countQuarantineSentences + " из "
+                + (countProcessedSentences + countQuarantineSentences) + " обработанных");
+    }
 
 }
 

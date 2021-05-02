@@ -14,16 +14,20 @@ public class WordsRemover {
     private static ArrayList<String> wordsToDelete;
 
     public static void removeWords(PropertyLoader property, ArrayList<InputFile>inputFiles){
+        Handler.reportLog.startModule();
         Handler.reportLog.startCurrentOperation(LogOperation.LOAD_WORDS_TO_DELETE);
         WordsToDeleteStorage wordsToDeleteStorage = new WordsToDeleteStorage(property);
         wordsToDelete = wordsToDeleteStorage.getWordsToDelete();
         Handler.reportLog.startCurrentOperation(LogOperation.REMOVE_WORDS_TO_DELETE);
         processFiles(inputFiles);
+        wordsToDelete = null;
+        Handler.reportLog.endModule("Remove words ");
     }
 
     private static void processFiles(ArrayList<InputFile> inputFiles){
         for (String wordToDelete : wordsToDelete){
-            Pattern deleteWordPattern = Pattern.compile("(?<=[\\W&&[^А-Яа-яёЁ]])" + wordToDelete + "(?=[\\W&&[^А-Яа-яёЁ]])");
+            Pattern deleteWordPattern = Pattern.compile("(?<=[\\W&&[^А-Яа-яёЁ]])" + wordToDelete + "(?=[\\W&&[^А-Яа-яёЁ]])",
+                    Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
             for (InputFile inputFile : inputFiles){
                 handleFile(inputFile, deleteWordPattern);
             }

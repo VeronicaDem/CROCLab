@@ -126,13 +126,10 @@ public class NumberHandler {
                 return getString(res, copyNumber, number_copy, "миллион") + numberToSymbol((long) (number % 1e6), number_copy);
 
             }
-            /*
             if(number >= 1e9) {
                 return getStringByOneNumber("", number, number);
             }
-            */
-
-          if (number >= 1e9 && number < 2e9) {
+          /* if (number >= 1e9 && number < 2e9) {
                return "миллиард " + numberToSymbol((long) (number % 1e7), number_copy);
            }
            if (number >= 2e9 && number < 1e12) {
@@ -155,7 +152,7 @@ public class NumberHandler {
            if (number >= 2e15 && number < 1e18) {
                copyNumber = (long) (number / 1e15);
                return getString(res, copyNumber, number_copy, "квадриллион") + numberToSymbol((long) (number % 1e15), number_copy);
-           }
+           }*/
         }
 
         return res;
@@ -163,9 +160,9 @@ public class NumberHandler {
 
     private static String getString(String res, long number, long copy_number, String ends) {
         String t = numberToSymbol(number,  copy_number).trim();
-        // t.endsWith("надцать") || t.endsWith("дцать") ||
-        if (t.endsWith("десят") || t.endsWith("сто") ||
-                t.endsWith("тысяч") || t.endsWith("тысячи") || t.endsWith("ть")) {
+        if (t.endsWith("надцать") || t.endsWith("дцать") ||
+                t.endsWith("десят") || t.endsWith("сто") ||
+                t.endsWith("тысяч") || t.endsWith("тысячи")) {
             res += t + " " + ends + "ов ";
         }
         else res+= t + " " + ends + "а ";

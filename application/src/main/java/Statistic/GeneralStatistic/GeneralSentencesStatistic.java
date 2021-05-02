@@ -62,4 +62,8 @@ public class GeneralSentencesStatistic {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
+
+    public int getCountSentences(){
+        return countSentences;
+    }
 }

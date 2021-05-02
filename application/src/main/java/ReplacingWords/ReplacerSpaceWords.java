@@ -15,11 +15,13 @@ import java.util.regex.Pattern;
 public class ReplacerSpaceWords {
 
     public static void handleWhitespaceWords(DictionaryWhitespaceWords dictionaryWhitespaceWords, ArrayList<InputFile> inputFiles) {
+        Handler.reportLog.startModule();
         for (InputFile inputfile : inputFiles) {
             Handler.reportLog.startCurrentOperation(LogOperation.WHITESPACE_DICTIONARY, inputfile.getFileName());
             processInputFile(dictionaryWhitespaceWords, inputfile);
-
+            Handler.reportLog.endOperation();
         }
+        Handler.reportLog.endModule("Whitespace dictionary words ");
     }
 
 

@@ -22,6 +22,11 @@ public enum LogOperation {
     REMOVE_ACRONYMS("Помещение акронимов в карантин"),
     REMOVE_CAMEL_CASE("Удаление CamelCase"),
     CREATE_REPLACEMENT_FILE("Создание файла с заменами"),
+    PROCESSING_DATES("Обработка дат"),
+    PROCESSING_TIME("Обработака времени"),
+    PROCESSING_MONEY("Обработка денег"),
+    CAMELCASE_SEPARATOR("Разделение camelCase слов"),
+    PROCESSING_FRACTIONS("Обработка дробей"),
     CREATE_PROCESSED_FILES("Создание обработанных файлов");
 
     private String operationName;

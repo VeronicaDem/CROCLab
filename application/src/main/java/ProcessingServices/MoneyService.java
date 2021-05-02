@@ -1,7 +1,9 @@
 package ProcessingServices;
 
+import Handler.Handler;
 import InputFile.InputFile;
 import NumberService.NumberHandler;
+import ReportLog.LogOperation;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -10,9 +12,13 @@ import java.util.regex.Pattern;
 public class MoneyService {
 
     public static void processMoney(ArrayList<InputFile> inputFiles){
+        Handler.reportLog.startModule();
         for (InputFile inputFile : inputFiles){
+            Handler.reportLog.startCurrentOperation(LogOperation.PROCESSING_MONEY, inputFile.getFileName());
             processFile(inputFile);
+            Handler.reportLog.endOperation();
         }
+        Handler.reportLog.endModule("Money ");
     }
 
     private static void processFile(InputFile inputFile){

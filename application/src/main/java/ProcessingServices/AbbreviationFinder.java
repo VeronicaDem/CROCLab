@@ -11,10 +11,13 @@ import java.util.regex.Pattern;
 public class AbbreviationFinder {
 
     public static void processAbbreviations(ArrayList<InputFile> inputFiles) {
+        Handler.reportLog.startModule();
         for (InputFile inputFile : inputFiles) {
             Handler.reportLog.startCurrentOperation(LogOperation.FIND_ABBREVIATIONS, inputFile.getFileName());
             findAbbreviationsInInputFile(inputFile);
+            Handler.reportLog.endOperation();
         }
+        Handler.reportLog.endModule("Abbreviations ");
     }
 
     private static void findAbbreviationsInInputFile(InputFile inputFile) {
